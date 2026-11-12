@@ -1,0 +1,301 @@
+/* ============================================================================
+   IBM 5250 green-screen terminal styling.
+
+   The whole UI is laid out on an 80-column monospace grid so it reads like a
+   real display file. Colours follow the 5250 attribute set: green for normal
+   output, white for emphasised/heading text, turquoise for protected data,
+   amber for operator-entry fields, red for error lines.
+   ========================================================================== */
+
+:root {
+  --scr-bg:        #050806;
+  --scr-green:     #33ff66;
+  --scr-green-dim: #1f9940;
+  --scr-white:     #e8ffe8;
+  --scr-turq:      #4fd6d6;
+  --scr-amber:     #ffb000;
+  --scr-red:       #ff4a4a;
+  --scr-pink:      #ff7ab8;
+  --scr-blue:      #6fa8ff;
+
+  --scr-font: "IBM Plex Mono", "Consolas", "Lucida Console", "Courier New", monospace;
+  --scr-cell: 0.92rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  background: #000;
+}
+
+body {
+  font-family: var(--scr-font);
+  color: var(--scr-green);
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+/* ── CRT envelope ─────────────────────────────────────────────────────────── */
+
+.crt {
+  min-height: 100%;
+  background:
+    radial-gradient(ellipse 120% 100% at 50% 50%, #0b140d 0%, #020402 70%, #000 100%);
+  padding: 18px 12px 12px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow-x: auto;
+}
+
+/* scanlines */
+.crt::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.22) 3px,
+    rgba(0, 0, 0, 0.22) 4px
+  );
+}
+
+/* vignette + phosphor bloom */
+.crt::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 49;
+  background: radial-gradient(ellipse 90% 80% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+}
+
+.screen {
+  width: 82ch;
+  max-width: 100%;
+  font-size: var(--scr-cell);
+  line-height: 1.42;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 2px rgba(51, 255, 102, 0.55), 0 0 7px rgba(51, 255, 102, 0.22);
+  padding: 4px 1ch 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Attribute colours ────────────────────────────────────────────────────── */
+
+.a-green  { color: var(--scr-green); }
+.a-dim    { color: var(--scr-green-dim); }
+.a-white  { color: var(--scr-white); }
+.a-turq   { color: var(--scr-turq);  text-shadow: 0 0 2px rgba(79,214,214,.6); }
+.a-amber  { color: var(--scr-amber); text-shadow: 0 0 2px rgba(255,176,0,.6); }
+.a-red    { color: var(--scr-red);   text-shadow: 0 0 3px rgba(255,74,74,.7); }
+.a-pink   { color: var(--scr-pink);  text-shadow: 0 0 2px rgba(255,122,184,.6); }
+.a-blue   { color: var(--scr-blue);  text-shadow: 0 0 2px rgba(111,168,255,.6); }
+
+.rev {
+  background: var(--scr-green);
+  color: #040604;
+  text-shadow: none;
+  padding: 0 0.4ch;
+}
+.rev-amber { background: var(--scr-amber); color: #120a00; text-shadow: none; padding: 0 0.4ch; }
+.rev-red   { background: var(--scr-red);   color: #1a0000; text-shadow: none; padding: 0 0.4ch; }
+.rev-turq  { background: var(--scr-turq);  color: #001414; text-shadow: none; padding: 0 0.4ch; }
+
+.ul { text-decoration: underline; text-underline-offset: 3px; }
+.bold { font-weight: 700; }
+
+/* ── Structural rows ──────────────────────────────────────────────────────── */
+
+.row {
+  white-space: pre;
+  min-height: 1.42em;
+}
+
+.row-wrap { white-space: pre-wrap; }
+
+.hdr {
+  display: flex;
+  justify-content: space-between;
+  gap: 2ch;
+  white-space: pre;
+  color: var(--scr-white);
+}
+
+.hdr-mid { flex: 1; text-align: center; }
+
+.rule {
+  color: var(--scr-green-dim);
+  white-space: pre;
+  overflow: hidden;
+  user-select: none;
+}
+
+.blank { height: 1.42em; }
+
+/* ── Subfile (list) ───────────────────────────────────────────────────────── */
+
+.sfl {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: pre;
+}
+
+.sfl th {
+  text-align: left;
+  font-weight: 400;
+  color: var(--scr-white);
+  padding: 0 1ch 0 0;
+  border-bottom: 1px solid var(--scr-green-dim);
+}
+
+.sfl td {
+  padding: 0 1ch 0 0;
+  color: var(--scr-green);
+  vertical-align: top;
+}
+
+/* Long free-text columns (edit-trace detail) wrap instead of running off the
+   right edge of the display. */
+.sfl td.wrap,
+.sfl th.wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.sfl tbody tr { cursor: pointer; }
+
+.sfl tbody tr:hover td,
+.sfl tbody tr:hover td span {
+  background: rgba(51, 255, 102, 0.14);
+}
+
+.sfl tbody tr.sel td {
+  background: var(--scr-green);
+  color: #040604;
+  text-shadow: none;
+}
+.sfl tbody tr.sel td span { color: #040604 !important; text-shadow: none; }
+
+/* ── Entry fields ─────────────────────────────────────────────────────────── */
+
+.fld {
+  background: #0a140c;
+  border: none;
+  border-bottom: 1px solid var(--scr-green-dim);
+  color: var(--scr-amber);
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-shadow: 0 0 2px rgba(255, 176, 0, 0.6);
+  padding: 0 0.3ch;
+  outline: none;
+  text-transform: uppercase;
+}
+
+.fld:focus {
+  background: #122012;
+  border-bottom-color: var(--scr-amber);
+  box-shadow: 0 0 0 1px rgba(255, 176, 0, 0.35);
+}
+
+.fld::placeholder { color: #4a5a4a; text-shadow: none; }
+
+.fld-2 { width: 3ch; }
+.fld-8 { width: 9ch; }
+.fld-10 { width: 11ch; }
+.fld-20 { width: 21ch; }
+.fld-60 { width: 60ch; max-width: 100%; }
+
+/* cursor block on empty option fields */
+.caret {
+  display: inline-block;
+  width: 1ch;
+  background: var(--scr-green);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ── Message line ─────────────────────────────────────────────────────────── */
+
+.msg {
+  white-space: pre-wrap;
+  min-height: 1.42em;
+  color: var(--scr-red);
+}
+.msg.info { color: var(--scr-turq); }
+.msg.ok   { color: var(--scr-green); }
+
+/* ── Function key legend ──────────────────────────────────────────────────── */
+
+.fkeys {
+  white-space: pre-wrap;
+  color: var(--scr-green-dim);
+  border-top: 1px solid var(--scr-green-dim);
+  padding-top: 2px;
+  margin-top: 2px;
+}
+
+.fkeys b {
+  color: var(--scr-white);
+  font-weight: 400;
+}
+
+.fkeys button {
+  background: none;
+  border: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--scr-green-dim);
+  cursor: pointer;
+  padding: 0;
+}
+.fkeys button:hover { color: var(--scr-amber); }
+.fkeys button:hover b { color: var(--scr-amber); }
+
+/* ── Status indicator strip (bottom right of a real 5250) ─────────────────── */
+
+.opstat {
+  display: flex;
+  justify-content: space-between;
+  color: var(--scr-green-dim);
+  white-space: pre;
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+/* ── Links out to the other systems ───────────────────────────────────────── */
+
+a.scr-link {
+  color: var(--scr-turq);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+a.scr-link:hover { color: var(--scr-amber); }
+
+/* ── Boot / sign-on extras ────────────────────────────────────────────────── */
+
+.signon-box {
+  border: 1px solid var(--scr-green-dim);
+  padding: 1ch 2ch;
+}
+
+.kbd-hint {
+  color: var(--scr-green-dim);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 760px) {
+  :root { --scr-cell: 0.72rem; }
+  .crt { padding: 10px 6px; }
+}

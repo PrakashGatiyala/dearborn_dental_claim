@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dearborn Dental · Agentic Claims Adjudication</title>
+<style>
+:root{
+  --blue:#1171B9;--dblue:#0D558B;--lblue:#D1E8F8;--lblue2:#51ADEF;
+  --green:#1E8A4A;--lgreen:#D4EDDA;--amber:#E8820C;--lamber:#FFF3CD;
+  --red:#C0392B;--lred:#FAD7D3;
+  --grey:#666;--mgrey:#CCC;--lgrey:#F4F6F9;--black:#1A1A1A;--white:#FFF;
+  --bg:#EEF2F7;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--black);min-height:100vh;font-size:13px;}
+
+/* ─ Header ─ */
+.hd{background:var(--dblue);color:white;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.hd-l{display:flex;align-items:center;gap:14px;}
+.hd-brand{font-size:11px;font-weight:700;letter-spacing:.5px;opacity:.8;padding:3px 8px;border:1px solid rgba(255,255,255,.3);border-radius:3px;}
+.hd-title{font-size:15px;font-weight:700;}
+.hd-sub{font-size:10.5px;opacity:.7;margin-top:1px;}
+.hd-badge{background:var(--amber);color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:3px;letter-spacing:.5px;}
+
+/* ─ Queue bar ─ */
+.qbar{background:white;border-bottom:1px solid #dde3ea;padding:0 24px;display:flex;gap:0;overflow-x:auto;}
+.qitem{display:flex;align-items:center;gap:10px;padding:12px 18px;cursor:pointer;border-bottom:3px solid transparent;color:var(--grey);white-space:nowrap;font-size:12px;font-weight:600;transition:all .2s;user-select:none;}
+.qitem:hover{color:var(--black);background:var(--lgrey);}
+.qitem.active{color:var(--dblue);border-bottom-color:var(--blue);}
+.qitem .qi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.qi-dot.approved{background:var(--green);}
+.qi-dot.escalated{background:var(--amber);}
+.qi-dot.denied{background:var(--red);}
+.qi-dot.pending{background:var(--mgrey);}
+
+/* ─ Layout ─ */
+.wrap{display:flex;min-height:calc(100vh - 97px);}
+.sb{width:270px;flex-shrink:0;background:white;border-right:1px solid #dde3ea;overflow-y:auto;position:sticky;top:97px;height:calc(100vh - 97px);}
+.main{flex:1;padding:24px;overflow-x:hidden;}
+
+/* ─ Sidebar ─ */
+.sb-section{padding:14px 16px;}
+.sb-section h4{font-size:10px;font-weight:700;color:var(--grey);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+.sb-divider{height:1px;background:var(--lgrey);margin:0 16px;}
+.doc-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;cursor:pointer;transition:background .15s;font-size:11.5px;}
+.doc-item:hover{background:var(--lgrey);}
+.doc-item.active{background:var(--lblue);}
+.doc-icon{font-size:18px;flex-shrink:0;}
+.doc-name{font-weight:600;color:var(--black);line-height:1.3;}
+.doc-meta{font-size:10px;color:var(--grey);margin-top:1px;}
+.doc-badge{margin-left:auto;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;flex-shrink:0;}
+.db-req{background:var(--lred);color:var(--red);}
+.db-ok{background:var(--lgreen);color:var(--green);}
+.db-warn{background:var(--lamber);color:var(--amber);}
+
+/* ─ Panel ─ */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ─ Upload zone ─ */
+.upload-zone{background:white;border:2px dashed var(--mgrey);border-radius:10px;padding:30px;text-align:center;margin-bottom:20px;transition:border .2s;}
+.upload-zone.dropped{border-color:var(--green);background:var(--lgreen);}
+.uz-icon{font-size:40px;margin-bottom:10px;}
+.uz-title{font-size:15px;font-weight:700;color:var(--dblue);margin-bottom:4px;}
+.uz-sub{font-size:12px;color:var(--grey);}
+
+/* ─ Uploaded docs table ─ */
+.doc-table{background:white;border:1px solid #dde3ea;border-radius:8px;overflow:hidden;margin-bottom:20px;}
+.dt-head{background:var(--dblue);color:white;display:grid;grid-template-columns:auto 1fr auto auto auto;gap:0;padding:0;}
+.dt-head div{padding:9px 12px;font-size:11px;font-weight:700;letter-spacing:.4px;}
+.dt-row{display:grid;grid-template-columns:auto 1fr auto auto auto;border-bottom:1px solid var(--lgrey);align-items:center;}
+.dt-row:last-child{border-bottom:none;}
+.dt-row div{padding:9px 12px;font-size:11.5px;}
+.dt-row:nth-child(even){background:var(--lgrey);}
+.flag{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700;}
+.flag-ok{background:var(--lgreen);color:var(--green);}
+.flag-miss{background:var(--lred);color:var(--red);}
+.flag-warn{background:var(--lamber);color:var(--amber);}
+
+/* ─ Agent card ─ */
+.agent-card{background:white;border:1px solid #dde3ea;border-radius:8px;overflow:hidden;margin-bottom:12px;}
+.ac-head{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;border-bottom:1px solid var(--lgrey);}
+.ac-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ac-info{flex:1;}
+.ac-name{font-size:13px;font-weight:700;color:var(--dblue);}
+.ac-status{font-size:11px;margin-top:2px;}
+.ac-status.done{color:var(--green);}
+.ac-status.escalated{color:var(--amber);}
+.ac-status.denied{color:var(--red);}
+.ac-status.running{color:var(--amber);}
+.ac-conf{text-align:right;}
+.conf-pct{font-size:17px;font-weight:800;line-height:1;}
+.conf-pct.high{color:var(--green);}
+.conf-pct.mid{color:var(--amber);}
+.conf-pct.low{color:var(--red);}
+.conf-bar{width:80px;height:5px;background:var(--lgrey);border-radius:3px;margin-top:4px;overflow:hidden;}
+.conf-fill{height:100%;border-radius:3px;}
+.cf-high{background:var(--green);}
+.cf-mid{background:var(--amber);}
+.cf-low{background:var(--red);}
+.ac-body{padding:14px 16px;}
+.thought{background:#F8F9FF;border-left:3px solid var(--lblue2);padding:10px 12px;border-radius:0 5px 5px 0;font-size:11.5px;line-height:1.65;color:var(--black);margin-bottom:10px;}
+.result-box{border-radius:6px;padding:11px 13px;font-size:11.5px;}
+.result-box.ok{background:var(--lgreen);border:1px solid #b8e6c7;}
+.result-box.warn{background:var(--lamber);border:1px solid #ffdca0;}
+.result-box.bad{background:var(--lred);border:1px solid #f0b8b3;}
+.result-label{font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:5px;}
+.rl-ok{color:var(--green);}
+.rl-warn{color:var(--amber);}
+.rl-bad{color:var(--red);}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:11px;margin-top:4px;}
+.kv-l{color:var(--grey);font-weight:600;white-space:nowrap;}
+.kv-v{color:var(--black);}
+
+/* ─ Final decision ─ */
+.decision-banner{border-radius:10px;padding:22px 24px;margin-bottom:20px;}
+.decision-banner.approved{background:var(--lgreen);border:2px solid var(--green);}
+.decision-banner.escalated{background:var(--lamber);border:2px solid var(--amber);}
+.decision-banner.denied{background:var(--lred);border:2px solid var(--red);}
+.db-stamp{font-size:30px;font-weight:900;letter-spacing:3px;display:inline-block;padding:4px 16px;border-radius:4px;transform:rotate(-2deg);margin-bottom:12px;}
+.stamp-approved{border:3px solid var(--green);color:var(--green);}
+.stamp-escalated{border:3px solid var(--amber);color:var(--amber);}
+.stamp-denied{border:3px solid var(--red);color:var(--red);}
+.db-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
+.db-cell{background:white;border-radius:6px;padding:10px 12px;border:1px solid rgba(0,0,0,.08);}
+.db-cell-label{font-size:10px;color:var(--grey);margin-bottom:3px;}
+.db-cell-val{font-size:16px;font-weight:800;color:var(--dblue);}
+.db-rationale{font-size:12px;color:var(--black);line-height:1.6;margin-top:10px;}
+
+/* ─ Escalation panel ─ */
+.esc-panel{background:white;border:2px solid var(--amber);border-radius:10px;padding:20px 22px;margin-bottom:16px;}
+.esc-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.esc-icon{font-size:28px;}
+.esc-title{font-size:16px;font-weight:700;color:var(--amber);}
+.esc-sub{font-size:12px;color:var(--grey);margin-top:2px;}
+.esc-dossier{background:var(--lamber);border-radius:6px;padding:14px 16px;font-size:12px;line-height:1.65;}
+.esc-checklist{margin-top:12px;}
+.esc-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #ffdca0;font-size:12px;}
+.esc-item:last-child{border-bottom:none;}
+.esc-num{background:var(--amber);color:white;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.esc-action{font-size:10px;margin-left:30px;color:var(--grey);margin-top:2px;}
+
+/* ─ Denial detail ─ */
+.denial-code{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;background:var(--lred);border-radius:6px;margin-bottom:8px;font-size:12px;}
+.dc-code{background:var(--red);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:2px;}
+.dc-desc{flex:1;line-height:1.55;}
+.dc-action{font-size:10.5px;color:var(--red);font-weight:600;margin-top:4px;}
+
+/* ─ Audit trail ─ */
+.audit{background:white;border:1px solid #dde3ea;border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.audit-head{background:var(--lgrey);padding:10px 14px;font-size:11px;font-weight:700;color:var(--grey);letter-spacing:.5px;display:grid;grid-template-columns:65px 120px 1fr 50px;}
+.audit-row{padding:9px 14px;border-bottom:1px solid var(--lgrey);display:grid;grid-template-columns:65px 120px 1fr 50px;font-size:11.5px;align-items:start;}
+.audit-row:last-child{border-bottom:none;}
+.ar-time{color:var(--grey);font-family:monospace;font-size:10.5px;padding-top:1px;}
+.ar-agent{font-weight:700;color:var(--blue);}
+.ar-conf{font-weight:700;text-align:right;}
+
+/* ─ KPI strip ─ */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi{background:white;border:1px solid #dde3ea;border-radius:8px;padding:13px 15px;}
+.kpi-l{font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.kpi-v{font-size:24px;font-weight:800;line-height:1;}
+.kpi-v.g{color:var(--green);}
+.kpi-v.a{color:var(--amber);}
+.kpi-v.r{color:var(--red);}
+.kpi-v.b{color:var(--blue);}
+.kpi-s{font-size:10.5px;color:var(--grey);margin-top:4px;}
+
+/* ─ Misc ─ */
+.section-tag{display:inline-block;background:var(--blue);color:white;font-size:10px;font-weight:700;letter-spacing:.6px;padding:3px 10px;border-radius:3px;text-transform:uppercase;margin-bottom:8px;}
+.panel-title{font-size:20px;font-weight:700;color:var(--dblue);margin-bottom:3px;}
+.panel-sub{font-size:12.5px;color:var(--grey);margin-bottom:20px;}
+.info-bar{background:var(--lblue);border:1px solid #b3d4f0;border-radius:6px;padding:10px 14px;font-size:12px;color:var(--dblue);display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;}
+.btn{padding:9px 18px;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;transition:all .15s;}
+.btn-p{background:var(--blue);color:white;}
+.btn-p:hover{background:var(--dblue);}
+.btn-s{background:white;color:var(--blue);border:1.5px solid var(--blue);}
+.btn-s:hover{background:var(--lblue);}
+.btn-esc{background:var(--amber);color:white;}
+.nav-btns{display:flex;justify-content:space-between;margin-top:22px;padding-top:16px;border-top:1px solid #dde3ea;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-thumb{background:var(--mgrey);border-radius:3px;}
+.card{background:white;border:1px solid #dde3ea;border-radius:8px;padding:16px 18px;margin-bottom:14px;}
+.card-title{font-size:13px;font-weight:700;color:var(--dblue);margin-bottom:10px;}
+.step-bar{display:flex;align-items:center;gap:0;margin-bottom:22px;background:white;border:1px solid #dde3ea;border-radius:8px;overflow:hidden;}
+.step-btn{flex:1;padding:10px 6px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;color:var(--grey);border-right:1px solid #dde3ea;transition:all .15s;user-select:none;}
+.step-btn:last-child{border-right:none;}
+.step-btn:hover{background:var(--lgrey);}
+.step-btn.active{background:var(--dblue);color:white;}
+.step-btn.done{background:var(--lgreen);color:var(--green);}
+@media(max-width:900px){.sb{display:none;}.kpi-strip,.db-grid{grid-template-columns:1fr 1fr;}.grid2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hd">
+  <div class="hd-l">
+    <div class="hd-brand">MASTECH DIGITAL</div>
+    <div style="width:1px;height:28px;background:rgba(255,255,255,.25)"></div>
+    <div>
+      <div class="hd-title">Agentic AI — Dental Claims Adjudication</div>
+      <div class="hd-sub">Dearborn Group / HCSC &nbsp;·&nbsp; Commercial PPO &nbsp;·&nbsp; Live Demo Environment</div>
+    </div>
+  </div>
+  <div class="hd-badge">COMMERCIAL ONLY</div>
+</div>
+
+<!-- CLAIM QUEUE TAB BAR -->
+<div class="qbar">
+  <div class="qitem active" id="qtab0" onclick="switchClaim(0)">
+    <div class="qi-dot pending" id="qdot0"></div>
+    DG-2026-1001 &nbsp;·&nbsp; D2740 Crown &nbsp;·&nbsp; Nguyen, P.
+  </div>
+  <div class="qitem" id="qtab1" onclick="switchClaim(1)">
+    <div class="qi-dot pending" id="qdot1"></div>
+    DG-2026-1002 &nbsp;·&nbsp; D8090 Ortho+COB &nbsp;·&nbsp; Webb, J.
+  </div>
+  <div class="qitem" id="qtab2" onclick="switchClaim(2)">
+    <div class="qi-dot pending" id="qdot2"></div>
+    DG-2026-1003 &nbsp;·&nbsp; D6010 Implant &nbsp;·&nbsp; Washington, D.
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="wrap">
+
+<!-- SIDEBAR -->
+<div class="sb">
+  <div class="sb-section">
+    <h4>Claim Documents</h4>
+    <div id="docList"></div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-section">
+    <h4>Document Flags</h4>
+    <div id="flagList"></div>
+  </div>
+  <div class="sb-divider"></div>
+  <div class="sb-section">
+    <h4>Claim Status</h4>
+    <div id="claimStatus" style="font-size:13px;font-weight:700;color:var(--grey);">— Not started</div>
+    <div id="claimConf" style="font-size:11px;color:var(--grey);margin-top:4px;"></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- ══ CLAIM 1: CROWN — AUTO APPROVED ══ -->
+  <div class="panel active" id="claim0">
+    <div class="section-tag">CLAIM 1 OF 3 &nbsp;·&nbsp; AUTO-ADJUDICATED</div>
+    <div class="panel-title">Patricia Nguyen &nbsp;·&nbsp; D2740 Crown, Porcelain — Tooth #14</div>
+    <div class="panel-sub">Commercial PPO Silver TX &nbsp;·&nbsp; In-network provider &nbsp;·&nbsp; All documents present &nbsp;·&nbsp; No COB complexity</div>
+
+    <div class="step-bar">
+      <div class="step-btn active" id="c0s0" onclick="c0step(0)">① Document Upload</div>
+      <div class="step-btn" id="c0s1" onclick="c0step(1)">② Agent Processing</div>
+      <div class="step-btn" id="c0s2" onclick="c0step(2)">③ Decision & Audit</div>
+    </div>
+
+    <!-- Step 0: Upload -->
+    <div id="c0p0">
+      <div class="upload-zone" id="c0uz">
+        <div class="uz-icon">📂</div>
+        <div class="uz-title">Documents Received — Claim DG-2026-1001</div>
+        <div class="uz-sub">2 documents uploaded by provider portal on Sep 5, 2026</div>
+      </div>
+
+      <div class="doc-table">
+        <div class="dt-head">
+          <div>Type</div><div>Document Name</div><div>Pages</div><div>Size</div><div>Status</div>
+        </div>
+        <div class="dt-row">
+          <div>📋</div>
+          <div><b>ADA Claim Form</b><br><span style="font-size:10px;color:var(--grey)">P1_ADA_Claim_Form_D2740_Crown.pdf</span></div>
+          <div>2</div><div>148 KB</div>
+          <div><span class="flag flag-ok">✓ Complete</span></div>
+        </div>
+        <div class="dt-row">
+          <div>🦷</div>
+          <div><b>Radiographic Report + X-ray</b><br><span style="font-size:10px;color:var(--grey)">P1_Radiograph_Report_Tooth14.pdf</span></div>
+          <div>1</div><div>92 KB</div>
+          <div><span class="flag flag-ok">✓ Present</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Pre-Processing Document Check</div>
+        <div class="kv">
+          <div class="kv-l">ADA Claim Form:</div><div class="kv-v" style="color:var(--green);font-weight:700">✓ Present & complete</div>
+          <div class="kv-l">CDT Code:</div><div class="kv-v">D2740 — Crown, porcelain/ceramic substrate</div>
+          <div class="kv-l">Radiograph:</div><div class="kv-v" style="color:var(--green);font-weight:700">✓ Periapical + bitewing — tooth #14</div>
+          <div class="kv-l">Clinical Narrative:</div><div class="kv-v" style="color:var(--green);font-weight:700">✓ Included in claim form Section E</div>
+          <div class="kv-l">Predetermination:</div><div class="kv-v">Not required — billed amount below $1,600 threshold for D2740</div>
+          <div class="kv-l">COB:</div><div class="kv-v" style="color:var(--green);font-weight:700">✓ No secondary coverage — confirmed</div>
+          <div class="kv-l">Document Completeness:</div><div class="kv-v" style="color:var(--green);font-weight:700;font-size:14px">100% — Ready for agent processing</div>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <span></span>
+        <button class="btn btn-p" onclick="c0step(1)">Run Agentic Adjudication →</button>
+      </div>
+    </div>
+
+    <!-- Step 1: Agents -->
+    <div id="c0p1" style="display:none">
+      <div class="info-bar">
+        <span style="font-size:16px">🤖</span>
+        <div>Orchestrator dispatching claim DG-2026-1001 through 5-agent pipeline. All documents present. No COB flag. Expecting straight-through processing.</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#E8F4FC">📥</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 01 — Intake & Document Parsing</div>
+            <div class="ac-status done">✓ Complete — All fields extracted</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">99%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:99%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">Parsed ADA Claim Form DG-2026-1001. Extracted: CDT D2740 (Crown, porcelain), tooth #14, billed $1,515 ($1,450 crown + $65 periodic exam). Provider NPI 1098765432 (Dr. Sandra Okonkwo, DDS). Member ID HCSC-TX-88301124. DOS Aug 28 2026.<br><br>Radiograph report extracted: PA + bitewing, tooth #14, interpreting provider matches treating provider. Narrative extracted from Section E — documents decay extent and structural justification for full-coverage crown over inlay/onlay.</div>
+          <div class="result-box ok">
+            <div class="result-label rl-ok">INTAKE COMPLETE</div>
+            <div class="kv">
+              <div class="kv-l">Claim fields:</div><div class="kv-v">✓ All required fields populated</div>
+              <div class="kv-l">Attachments:</div><div class="kv-v">✓ 2 of 2 required documents present</div>
+              <div class="kv-l">Document quality:</div><div class="kv-v">✓ OCR confidence 97.1% on narrative</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#E8F4FC">🔍</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 02 — Member Eligibility & Benefits</div>
+            <div class="ac-status done">✓ Complete — Eligible, benefit available</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">98%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:98%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">Queried HCSC member index for HCSC-TX-88301124. Member Patricia Nguyen, DOB Mar 14 1978, active on PPO Silver TX since Jan 1 2024. Employer group GRP-MHS-2024-TX confirmed active. No secondary coverage on file — COB flag: NONE.<br><br>Crown benefit check: PPO Silver TX covers D2740 at 50% after $150 deductible. Deductible met YTD (confirmed via claims history — $212 applied to date). Annual max: $2,000; $847 used YTD; $1,153 remaining. D2740 frequency rule: 1 per tooth per 5 years. Prior crown on tooth #14: NONE in HCSC history.</div>
+          <div class="result-box ok">
+            <div class="result-label rl-ok">ELIGIBILITY CONFIRMED</div>
+            <div class="kv">
+              <div class="kv-l">Member status:</div><div class="kv-v">✓ Active PPO Silver TX</div>
+              <div class="kv-l">Benefit available:</div><div class="kv-v">✓ $1,153 annual max remaining</div>
+              <div class="kv-l">Deductible:</div><div class="kv-v">✓ Met — $0 additional deductible</div>
+              <div class="kv-l">Frequency:</div><div class="kv-v">✓ No prior D2740 on tooth #14 (5yr lookback)</div>
+              <div class="kv-l">COB:</div><div class="kv-v">✓ No secondary — STP eligible</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#EEF8F2">🦷</div>
+          <div class="ac-icon" style="background:#E8F4FC;display:none">x</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 03 — CDT Validation & Fee Schedule</div>
+            <div class="ac-status done">✓ Complete — Code valid, contracted rate applied</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">98%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:98%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">CDT D2740 (Crown — porcelain/ceramic): valid code in current ADA CDT 2026 manual. Applies to tooth #14 — a posterior tooth (molar). Checked plan policy: PPO Silver TX covers D2740 for posterior teeth at standard crown benefit. Fee schedule PPO-SILVER-TX-2026: contracted rate D2740 = $1,180. Billed: $1,450 → write-down of $270 applied.<br><br>D0120 periodic exam: contracted rate $45 vs billed $65 → write-down $20. Total contracted: $1,225.</div>
+          <div class="result-box ok">
+            <div class="result-label rl-ok">CDT VALIDATED</div>
+            <div class="kv">
+              <div class="kv-l">D2740 contracted rate:</div><div class="kv-v">$1,180 (billed $1,450 — write-down $270)</div>
+              <div class="kv-l">D0120 contracted rate:</div><div class="kv-v">$45 (billed $65 — write-down $20)</div>
+              <div class="kv-l">Total contracted:</div><div class="kv-v" style="font-weight:700">$1,225.00</div>
+              <div class="kv-l">Code validity:</div><div class="kv-v">✓ Both codes valid for tooth/plan type</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#E8F4FC">🩺</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 04 — Clinical Review (Narrative + X-ray)</div>
+            <div class="ac-status done">✓ Complete — Clinical necessity confirmed</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">95%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:95%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">NLP on claim narrative: documented secondary caries beneath existing restoration, multi-surface involvement (M/O/D), structural compromise. Radiograph report confirms: recurrent caries on distal aspect, dentin involvement confirmed, estimated &lt;40% sound coronal structure. Cusps undermined per radiographic interpretation.<br><br>Clinical necessity check: crown (D2740) vs. inlay/onlay (D2610–D2664) — documented justification present ("insufficient remaining tooth structure"). Radiographic findings consistent with clinical narrative. No discrepancy detected.</div>
+          <div class="result-box ok">
+            <div class="result-label rl-ok">CLINICAL NECESSITY CONFIRMED</div>
+            <div class="kv">
+              <div class="kv-l">Diagnosis documented:</div><div class="kv-v">✓ Secondary caries, structural compromise</div>
+              <div class="kv-l">X-ray consistent:</div><div class="kv-v">✓ PA and bitewing support crown indication</div>
+              <div class="kv-l">Alternative tx considered:</div><div class="kv-v">✓ Inlay/onlay ruled out with documented rationale</div>
+              <div class="kv-l">Necessity score:</div><div class="kv-v" style="color:var(--green);font-weight:700">95% — Above 88% clinical threshold</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#EEF8F2">⚖️</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 05 — Adjudication Decision</div>
+            <div class="ac-status done">✓ APPROVED — Straight-through processing</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">97%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:97%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">All upstream agents PASS. Applying adjudication: D2740 contracted $1,180 × 50% coinsurance (deductible met) = plan pays $590. D0120 contracted $45 × 50% = plan pays $22.50. Total plan payment: $612.50. Member responsibility: $612.50 + write-down protection (provider write-down per contract, not patient responsibility).<br><br>Annual max check: $847 used + $612.50 new = $1,459.50 of $2,000 max — within limit. Confidence: 97%. No COB, no escalation triggers. Recommend auto-approval.</div>
+          <div class="result-box ok">
+            <div class="result-label rl-ok">ADJUDICATION: APPROVED</div>
+            <div class="kv">
+              <div class="kv-l">Plan payment:</div><div class="kv-v" style="font-weight:700">$612.50</div>
+              <div class="kv-l">Member responsibility:</div><div class="kv-v">$612.50 (50% coinsurance)</div>
+              <div class="kv-l">Write-down (provider):</div><div class="kv-v">$290.00 per contractual agreement</div>
+              <div class="kv-l">Confidence:</div><div class="kv-v" style="color:var(--green);font-weight:700">97% — Auto-approved (threshold: 92%)</div>
+              <div class="kv-l">Human review:</div><div class="kv-v" style="color:var(--green);font-weight:700">NOT REQUIRED</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-s" onclick="c0step(0)">← Documents</button>
+        <button class="btn btn-p" onclick="c0step(2)">View Decision & Audit →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Decision -->
+    <div id="c0p2" style="display:none">
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-l">Decision</div><div class="kpi-v g">APPROVED</div><div class="kpi-s">Auto-adjudicated</div></div>
+        <div class="kpi"><div class="kpi-l">Processing Time</div><div class="kpi-v b">2:14</div><div class="kpi-s">vs. 2–5 days manual</div></div>
+        <div class="kpi"><div class="kpi-l">Confidence</div><div class="kpi-v g">97%</div><div class="kpi-s">Threshold: 92%</div></div>
+        <div class="kpi"><div class="kpi-l">Human Touchpoints</div><div class="kpi-v g">0</div><div class="kpi-s">Full STP</div></div>
+      </div>
+
+      <div class="decision-banner approved">
+        <div class="db-stamp stamp-approved">APPROVED</div>
+        <div style="font-size:14px;font-weight:700">Claim DG-2026-1001 · D2740 Crown, Porcelain/Ceramic · Tooth #14</div>
+        <div class="db-grid">
+          <div class="db-cell"><div class="db-cell-label">Contracted Amount</div><div class="db-cell-val">$1,225.00</div></div>
+          <div class="db-cell"><div class="db-cell-label">Plan Pays (50% coins.)</div><div class="db-cell-val">$612.50</div></div>
+          <div class="db-cell"><div class="db-cell-label">Member Liability</div><div class="db-cell-val">$612.50</div></div>
+        </div>
+        <div class="db-rationale">Member active PPO Silver TX, deductible met, annual max within limits. D2740 on tooth #14 — no prior crown in 5-year lookback. Radiograph and narrative confirm clinical necessity for full-coverage crown. Provider in-network at contracted fee. No COB. All 5 agents passed at or above threshold. Auto-adjudication applied at confidence 97%.</div>
+      </div>
+
+      <div class="audit">
+        <div class="audit-head"><div>TIME</div><div>AGENT</div><div>ACTION</div><div>CONF.</div></div>
+        <div class="audit-row"><div class="ar-time">09:14:03</div><div class="ar-agent">Orchestrator</div><div>Claim DG-2026-1001 ingested. 2 documents present. Dispatching to pipeline.</div><div class="ar-conf">—</div></div>
+        <div class="audit-row"><div class="ar-time">09:14:05</div><div class="ar-agent">Intake Agent</div><div>Parsed D2740 + D0120. Narrative and X-ray report extracted. Completeness: PASS.</div><div class="ar-conf" style="color:var(--green)">99%</div></div>
+        <div class="audit-row"><div class="ar-time">09:14:09</div><div class="ar-agent">Eligibility Agent</div><div>Active PPO Silver TX. Deductible met. $1,153 max remaining. No COB. Frequency: no prior D2740 on #14.</div><div class="ar-conf" style="color:var(--green)">98%</div></div>
+        <div class="audit-row"><div class="ar-time">09:14:14</div><div class="ar-agent">CDT Validation</div><div>D2740 valid posterior crown. Fee schedule: $1,180 contracted. D0120: $45. Total: $1,225.</div><div class="ar-conf" style="color:var(--green)">98%</div></div>
+        <div class="audit-row"><div class="ar-time">09:14:51</div><div class="ar-agent">Clinical Review</div><div>NLP + X-ray: caries, structural compromise, inlay ruled out with rationale. Necessity: 95%.</div><div class="ar-conf" style="color:var(--green)">95%</div></div>
+        <div class="audit-row"><div class="ar-time">09:16:17</div><div class="ar-agent">Adjudication Agent</div><div>50% coinsurance applied. Plan pays $612.50. Annual max check passed. APPROVED.</div><div class="ar-conf" style="color:var(--green)">97%</div></div>
+        <div class="audit-row" style="background:var(--lgreen)"><div class="ar-time" style="color:var(--green);font-weight:700">FINAL</div><div class="ar-agent" style="color:var(--green)">Orchestrator</div><div style="color:var(--green);font-weight:600">Claim APPROVED — $612.50 plan payment. STP. Processing time 2m 14s. No manual review.</div><div class="ar-conf" style="color:var(--green)">97%</div></div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-s" onclick="c0step(1)">← Agent Processing</button>
+        <button class="btn btn-p" onclick="switchClaim(1)">Next Claim: Ortho + COB →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CLAIM 2: ORTHO + COB — ESCALATED ══ -->
+  <div class="panel" id="claim1">
+    <div class="section-tag">CLAIM 2 OF 3 &nbsp;·&nbsp; ESCALATED TO SPECIALIST</div>
+    <div class="panel-title">Jordan Webb &nbsp;·&nbsp; D8090 Comprehensive Ortho, Adult — COB Complexity</div>
+    <div class="panel-sub">Commercial PPO Gold TX (Primary) &nbsp;·&nbsp; Cigna Dental PPO (Secondary — EOB missing) &nbsp;·&nbsp; Predetermination on file</div>
+
+    <div class="step-bar">
+      <div class="step-btn active" id="c1s0" onclick="c1step(0)">① Document Upload</div>
+      <div class="step-btn" id="c1s1" onclick="c1step(1)">② Agent Processing</div>
+      <div class="step-btn" id="c1s2" onclick="c1step(2)">③ Escalation Dossier</div>
+    </div>
+
+    <!-- Step 0: Upload -->
+    <div id="c1p0">
+      <div class="upload-zone">
+        <div class="uz-icon">📂</div>
+        <div class="uz-title">Documents Received — Claim DG-2026-1002</div>
+        <div class="uz-sub">2 documents uploaded by provider portal on Sep 8, 2026</div>
+      </div>
+
+      <div class="doc-table">
+        <div class="dt-head">
+          <div>Type</div><div>Document Name</div><div>Pages</div><div>Size</div><div>Status</div>
+        </div>
+        <div class="dt-row">
+          <div>📋</div>
+          <div><b>ADA Claim Form (with COB notation)</b><br><span style="font-size:10px;color:var(--grey)">P2_ADA_Claim_Form_D8090_Ortho_COB.pdf</span></div>
+          <div>2</div><div>162 KB</div>
+          <div><span class="flag flag-ok">✓ Present</span></div>
+        </div>
+        <div class="dt-row">
+          <div>📄</div>
+          <div><b>Predetermination PDET-2025-008812</b><br><span style="font-size:10px;color:var(--grey)">P2_Predetermination_PDET2025008812.pdf</span></div>
+          <div>1</div><div>87 KB</div>
+          <div><span class="flag flag-ok">✓ Present</span></div>
+        </div>
+        <div class="dt-row">
+          <div>📄</div>
+          <div><b>Secondary EOB (Cigna)</b><br><span style="font-size:10px;color:var(--grey)">Required for COB adjudication</span></div>
+          <div>—</div><div>—</div>
+          <div><span class="flag flag-miss">✗ MISSING</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Pre-Processing Document Check</div>
+        <div class="kv">
+          <div class="kv-l">ADA Claim Form:</div><div class="kv-v" style="color:var(--green);font-weight:700">✓ Present — COB details noted</div>
+          <div class="kv-l">CDT Code:</div><div class="kv-v">D8090 — Comprehensive ortho, adult (age 36)</div>
+          <div class="kv-l">Predetermination:</div><div class="kv-v" style="color:var(--green);font-weight:700">✓ PDET-2025-008812 — $4,800 approved, expires Dec 2026</div>
+          <div class="kv-l">Ortho Records:</div><div class="kv-v">Not submitted — available on request (noted in claim)</div>
+          <div class="kv-l">Secondary EOB (Cigna):</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ MISSING — COB cannot be fully resolved</div>
+          <div class="kv-l">COB Method:</div><div class="kv-v">Non-duplication — requires secondary EOB for final determination</div>
+          <div class="kv-l">Document Completeness:</div><div class="kv-v" style="color:var(--amber);font-weight:700;font-size:14px">⚠ Partial — Escalation likely</div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <span></span>
+        <button class="btn btn-p" onclick="c1step(1)">Run Agentic Adjudication →</button>
+      </div>
+    </div>
+
+    <!-- Step 1: Agents -->
+    <div id="c1p1" style="display:none">
+      <div class="info-bar" style="background:var(--lamber);border-color:#ffdca0;color:#5a3a00;">
+        <span style="font-size:16px">⚠️</span>
+        <div>Orchestrator flagged COB complexity on intake. Running full pipeline — COB agent will assess whether secondary EOB is resolvable without manual intervention.</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#E8F4FC">📥</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 01 — Intake & Document Parsing</div>
+            <div class="ac-status done">✓ Complete — COB flag raised</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">97%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:97%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">Parsed ADA Claim Form DG-2026-1002. CDT D8090 (Comprehensive ortho, adult), D8660 (pre-ortho exam). Member HCSC-TX-77209341. Provider NPI 1567892340 (Dr. Anita Krishnamurthy, orthodontist). Billed total $6,375. DOS Sep 2 2026.<br><br>Secondary insurance flagged in Section B: Cigna Dental PPO (CIG-2024-TX-884201). COB method: non-duplication. Predetermination PDET-2025-008812 located and matched. Secondary EOB: NOT present in submission packet.</div>
+          <div class="result-box warn">
+            <div class="result-label rl-warn">INTAKE COMPLETE — COB FLAG RAISED</div>
+            <div class="kv">
+              <div class="kv-l">Primary claim fields:</div><div class="kv-v">✓ All required fields present</div>
+              <div class="kv-l">Predetermination:</div><div class="kv-v">✓ PDET-2025-008812 matched — $4,800</div>
+              <div class="kv-l">Secondary EOB:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ Cigna EOB not submitted — COB unresolvable at intake</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#E8F4FC">🔍</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 02 — Member Eligibility & Benefits</div>
+            <div class="ac-status done">✓ Complete — Primary benefit resolved; secondary pending</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct mid">82%</div><div class="conf-bar"><div class="conf-fill cf-mid" style="width:82%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">HCSC member HCSC-TX-77209341 — Marcus Webb active PPO Gold TX, Group GRP-WLS-2023-TX. Patient: Jordan Webb (spouse, dependent). Patient active on HCSC since March 2023.<br><br>Adult ortho benefit: lifetime max $3,000 at 50% coinsurance. Prior ortho claims: $0. Adult ortho deductible: $150 — not yet met (no ortho claims this year). Primary plan payment estimate: ($5,600 contracted − $150 deductible) × 50% = $2,725. But: COB non-duplication rule — combined plan payments cannot exceed lesser of billed or contracted amount. Cannot finalize without Cigna EOB to determine Cigna's payment or non-payment.</div>
+          <div class="result-box warn">
+            <div class="result-label rl-warn">PRIMARY BENEFIT RESOLVED — SECONDARY UNKNOWN</div>
+            <div class="kv">
+              <div class="kv-l">Member active:</div><div class="kv-v">✓ Jordan Webb, PPO Gold TX</div>
+              <div class="kv-l">Adult ortho benefit:</div><div class="kv-v">$3,000 lifetime max — $0 used</div>
+              <div class="kv-l">Primary est. payment:</div><div class="kv-v">$2,725 (pending COB resolution)</div>
+              <div class="kv-l">Cigna EOB:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ Missing — final amount cannot be determined</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#E8F4FC">🦷</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 03 — CDT Validation & Fee Schedule</div>
+            <div class="ac-status done">✓ Complete — Contracted rate applied</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">96%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:96%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">D8090 (Comprehensive ortho, adult) — valid CDT 2026 code. No age restriction — patient age 36, no upper age limit under PPO Gold TX for D8090. Fee schedule PPO-GOLD-TX-ORTHO-2026: D8090 contracted rate $5,600. Billed $6,200 → write-down $600. D8660 (pre-ortho exam) contracted rate $135; billed $175 → write-down $40. Total contracted: $5,735.</div>
+          <div class="result-box ok">
+            <div class="result-label rl-ok">CDT VALIDATED</div>
+            <div class="kv">
+              <div class="kv-l">D8090 contracted:</div><div class="kv-v">$5,600 (billed $6,200)</div>
+              <div class="kv-l">D8660 contracted:</div><div class="kv-v">$135 (billed $175)</div>
+              <div class="kv-l">Total contracted:</div><div class="kv-v" style="font-weight:700">$5,735.00</div>
+              <div class="kv-l">Age restriction:</div><div class="kv-v">✓ None for D8090 under this plan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#FFF4E6">⚖️</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 04 — COB Resolution Agent</div>
+            <div class="ac-status escalated">⚠ ESCALATION TRIGGERED — Cannot resolve COB</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct low">41%</div><div class="conf-bar"><div class="conf-fill cf-low" style="width:41%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">Attempting to resolve COB for Cigna Dental PPO secondary. Non-duplication method requires: (a) Cigna's contractual allowed amount for D8090, and (b) whether Cigna paid or denied. Without EOB, I cannot determine Cigna's payment position.<br><br>Attempted HCSC inter-carrier data exchange lookup for CIG-2024-TX-884201 — no automated data available for this Cigna group. Attempted predetermination cross-reference — PDET was issued on primary coverage only, no COB estimate included. Unable to construct compliant COB calculation without secondary EOB. Confidence drops to 41% — below 70% escalation threshold.</div>
+          <div class="result-box warn">
+            <div class="result-label rl-warn">COB UNRESOLVABLE — ESCALATION REQUIRED</div>
+            <div class="kv">
+              <div class="kv-l">Escalation reason:</div><div class="kv-v" style="font-weight:700">Secondary EOB (Cigna) not submitted</div>
+              <div class="kv-l">Confidence:</div><div class="kv-v" style="color:var(--red);font-weight:700">41% — Below 70% escalation threshold</div>
+              <div class="kv-l">Action:</div><div class="kv-v" style="color:var(--amber);font-weight:700">Route to COB Specialist with pre-assembled dossier</div>
+              <div class="kv-l">Hold reason code:</div><div class="kv-v">COB-03 — Secondary EOB Required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-s" onclick="c1step(0)">← Documents</button>
+        <button class="btn btn-esc" onclick="c1step(2)">View Escalation Dossier →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Escalation -->
+    <div id="c1p2" style="display:none">
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-l">Decision</div><div class="kpi-v a">ESCALATED</div><div class="kpi-s">Specialist review</div></div>
+        <div class="kpi"><div class="kpi-l">Agent Confidence</div><div class="kpi-v a">41%</div><div class="kpi-s">Threshold: 70%</div></div>
+        <div class="kpi"><div class="kpi-l">Escalation Reason</div><div class="kpi-v a">COB-03</div><div class="kpi-s">Missing secondary EOB</div></div>
+        <div class="kpi"><div class="kpi-l">Dossier Assembled</div><div class="kpi-v g">100%</div><div class="kpi-s">Specialist ready</div></div>
+      </div>
+
+      <div class="esc-panel">
+        <div class="esc-header">
+          <div class="esc-icon">📋</div>
+          <div>
+            <div class="esc-title">Claim Escalated — COB Specialist Dossier</div>
+            <div class="esc-sub">DG-2026-1002 · Jordan Webb · D8090 Adult Ortho · Reason: Missing Secondary EOB (Cigna)</div>
+          </div>
+        </div>
+        <div class="esc-dossier">
+          <b>What the agent resolved (no action needed):</b><br>
+          ✅ Member active PPO Gold TX · ✅ Adult ortho benefit $3,000 lifetime, $0 used · ✅ D8090 valid, contracted $5,600 · ✅ Predetermination PDET-2025-008812 matched ($4,800) · ✅ Provider in-network, license active<br><br>
+          <b>What needs specialist resolution:</b><br>
+          ❌ Cigna Dental PPO secondary EOB not submitted — COB-03 hold<br>
+          ⚠ Non-duplication COB: combined payments cannot exceed $5,600 contracted — but Cigna's payment/denial position unknown<br>
+          ⚠ If Cigna denies: HCSC pays $2,725 primary. If Cigna pays $X: HCSC reduces to ensure combined ≤ $5,600
+        </div>
+
+        <div class="esc-checklist">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase;">Specialist Action Items</div>
+          <div class="esc-item">
+            <div class="esc-num">1</div>
+            <div>
+              <div><b>Contact Cigna — Request Secondary EOB</b><br>Cigna Provider Services: 1-800-244-6224. Reference: Member CIG-2024-TX-884201, DOS Sep 2 2026, D8090. Request EOB or written denial within 10 business days.</div>
+              <div class="esc-action">OR: Request provider (Dr. Krishnamurthy) to obtain and forward Cigna EOB. Provider contact: (972) 555-0391.</div>
+            </div>
+          </div>
+          <div class="esc-item">
+            <div class="esc-num">2</div>
+            <div>
+              <div><b>Apply Non-Duplication COB Logic Once EOB Received</b><br>Calculate: HCSC payment = min(contracted rate $5,600, billed $6,375) minus Cigna allowed amount. HCSC pays the lesser of primary benefit or amount needed to bring total to contracted rate.</div>
+            </div>
+          </div>
+          <div class="esc-item">
+            <div class="esc-num">3</div>
+            <div>
+              <div><b>Confirm Ortho Deductible ($150) Against COB Calculation</b><br>Adult ortho deductible has not been met. Confirm whether deductible applies before or after COB credit when secondary processes.</div>
+            </div>
+          </div>
+          <div class="esc-item">
+            <div class="esc-num">4</div>
+            <div>
+              <div><b>Verify Predetermination Still Within Limits</b><br>PDET-2025-008812 estimated $2,725 primary payment — based on primary coverage only, no COB estimate. Final payment may differ. Notify provider if final amount differs by &gt;$200.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="audit">
+        <div class="audit-head"><div>TIME</div><div>AGENT</div><div>ACTION</div><div>CONF.</div></div>
+        <div class="audit-row"><div class="ar-time">10:02:11</div><div class="ar-agent">Orchestrator</div><div>Claim DG-2026-1002 ingested. COB flag detected on intake. Dispatching full pipeline.</div><div class="ar-conf">—</div></div>
+        <div class="audit-row"><div class="ar-time">10:02:13</div><div class="ar-agent">Intake Agent</div><div>D8090 + D8660 parsed. COB flag raised: Cigna secondary. Predeterm PDET-2025-008812 matched.</div><div class="ar-conf" style="color:var(--green)">97%</div></div>
+        <div class="audit-row"><div class="ar-time">10:02:19</div><div class="ar-agent">Eligibility Agent</div><div>Member active, adult ortho benefit $3,000 available, primary estimate $2,725 — COB incomplete.</div><div class="ar-conf" style="color:var(--amber)">82%</div></div>
+        <div class="audit-row"><div class="ar-time">10:02:24</div><div class="ar-agent">CDT Validation</div><div>D8090 valid adult ortho, no age limit, contracted $5,600. D8660 $135. Total $5,735.</div><div class="ar-conf" style="color:var(--green)">96%</div></div>
+        <div class="audit-row"><div class="ar-time">10:03:48</div><div class="ar-agent">COB Agent</div><div>Cigna EOB absent. Inter-carrier lookup failed. COB-03 hold triggered. Confidence 41% — below threshold.</div><div class="ar-conf" style="color:var(--red)">41%</div></div>
+        <div class="audit-row" style="background:#FFF8E8"><div class="ar-time" style="color:var(--amber);font-weight:700">HOLD</div><div class="ar-agent" style="color:var(--amber)">Orchestrator</div><div style="color:var(--amber);font-weight:600">ESCALATED — Hold COB-03. Pre-assembled dossier routed to COB Specialist queue. Est. resolution: 3–5 business days pending Cigna EOB.</div><div class="ar-conf" style="color:var(--amber)">41%</div></div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-s" onclick="c1step(1)">← Agent Processing</button>
+        <button class="btn btn-p" onclick="switchClaim(2)">Next Claim: Implant (Denied) →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CLAIM 3: IMPLANT — DENIED ══ -->
+  <div class="panel" id="claim2">
+    <div class="section-tag">CLAIM 3 OF 3 &nbsp;·&nbsp; AGENT DENIAL</div>
+    <div class="panel-title">Darnell Washington &nbsp;·&nbsp; D6010 Implant Surgical Placement — Tooth #19</div>
+    <div class="panel-sub">Commercial PPO Bronze TX &nbsp;·&nbsp; Waiting period violation &nbsp;·&nbsp; Multiple missing documents &nbsp;·&nbsp; No predetermination</div>
+
+    <div class="step-bar">
+      <div class="step-btn active" id="c2s0" onclick="c2step(0)">① Document Upload</div>
+      <div class="step-btn" id="c2s1" onclick="c2step(1)">② Agent Processing</div>
+      <div class="step-btn" id="c2s2" onclick="c2step(2)">③ Denial & EOB</div>
+    </div>
+
+    <!-- Step 0 -->
+    <div id="c2p0">
+      <div class="upload-zone" style="border-color:var(--red);background:#FFF8F8">
+        <div class="uz-icon">⚠️</div>
+        <div class="uz-title" style="color:var(--red)">Incomplete Submission — Claim DG-2026-1003</div>
+        <div class="uz-sub">1 document received — multiple required documents missing</div>
+      </div>
+
+      <div class="doc-table">
+        <div class="dt-head" style="background:var(--red)">
+          <div>Type</div><div>Document Name</div><div>Pages</div><div>Size</div><div>Status</div>
+        </div>
+        <div class="dt-row">
+          <div>📋</div>
+          <div><b>ADA Claim Form</b><br><span style="font-size:10px;color:var(--grey)">P3_ADA_Claim_Form_D6010_Implant_Denied.pdf</span></div>
+          <div>2</div><div>141 KB</div>
+          <div><span class="flag flag-warn">⚠ Partial</span></div>
+        </div>
+        <div class="dt-row">
+          <div>🦷</div>
+          <div><b>Panoramic / Periapical X-ray</b><br><span style="font-size:10px;color:var(--grey)">Referenced in claim — not attached</span></div>
+          <div>—</div><div>—</div>
+          <div><span class="flag flag-miss">✗ MISSING</span></div>
+        </div>
+        <div class="dt-row">
+          <div>📄</div>
+          <div><b>Clinical Narrative (implant justification)</b><br><span style="font-size:10px;color:var(--grey)">Bone density, ridge width, osseointegration plan — not submitted</span></div>
+          <div>—</div><div>—</div>
+          <div><span class="flag flag-miss">✗ MISSING</span></div>
+        </div>
+        <div class="dt-row">
+          <div>📄</div>
+          <div><b>Extraction Records (prior provider)</b><br><span style="font-size:10px;color:var(--grey)">Extraction date, reason, out-of-network provider — not submitted</span></div>
+          <div>—</div><div>—</div>
+          <div><span class="flag flag-miss">✗ MISSING</span></div>
+        </div>
+        <div class="dt-row">
+          <div>📋</div>
+          <div><b>Predetermination</b><br><span style="font-size:10px;color:var(--grey)">D6010 requires predetermination under PPO Bronze TX — none on file</span></div>
+          <div>—</div><div>—</div>
+          <div><span class="flag flag-miss">✗ MISSING</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Pre-Processing Document Check</div>
+        <div class="kv">
+          <div class="kv-l">ADA Claim Form:</div><div class="kv-v" style="color:var(--amber);font-weight:700">⚠ Present but narrative incomplete</div>
+          <div class="kv-l">CDT Code:</div><div class="kv-v">D6010 — Surgical implant placement; D7310 alveoloplasty; D9930 complication treatment</div>
+          <div class="kv-l">Radiograph (panoramic):</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ MISSING — Required for D6010 per plan rules</div>
+          <div class="kv-l">Clinical narrative:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ MISSING — Bone density, ridge dimensions not documented</div>
+          <div class="kv-l">Extraction records:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ MISSING — Extraction date/reason not documented</div>
+          <div class="kv-l">Predetermination:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ NONE — Required for all D6010 &gt;$500 under PPO Bronze TX</div>
+          <div class="kv-l">Waiting period:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ NOT MET — Plan effective Jan 1 2025; implant requires 24 months; elapsed only 11 months</div>
+          <div class="kv-l">Document Completeness:</div><div class="kv-v" style="color:var(--red);font-weight:700;font-size:14px">22% — Multiple hard-stop violations detected</div>
+        </div>
+      </div>
+      <div class="nav-btns">
+        <span></span>
+        <button class="btn btn-p" onclick="c2step(1)">Run Agentic Adjudication →</button>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div id="c2p1" style="display:none">
+      <div class="info-bar" style="background:var(--lred);border-color:#f0b8b3;color:#5a0000;">
+        <span style="font-size:16px">🚫</span>
+        <div>Orchestrator flagged multiple hard-stop violations at intake. Running full pipeline — denial reasoning being assembled for each violation. EOB will be auto-generated.</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#FEF0EE">📥</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 01 — Intake & Document Parsing</div>
+            <div class="ac-status denied">✗ Hard-stop flags raised — 4 violations detected</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct low">28%</div><div class="conf-bar"><div class="conf-fill cf-low" style="width:28%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">Parsed ADA Claim Form DG-2026-1003. CDT D6010 (surgical implant), D7310 (alveoloplasty), D9930 (complications). Member HCSC-TX-55401887. Provider NPI 1723456780 (Dr. Victor Reyes, oral surgeon). DOS Sep 5 2026. Billed $3,470.<br><br>Document completeness check — D6010 under PPO Bronze TX requires: (1) panoramic X-ray — ABSENT; (2) clinical narrative with bone density and ridge dimensions — ABSENT; (3) extraction records — ABSENT; (4) predetermination for all claims &gt;$500 — NONE ON FILE. Partial narrative in claim form but does not meet clinical documentation standard for D6010.</div>
+          <div class="result-box bad">
+            <div class="result-label rl-bad">INTAKE — 4 HARD-STOP VIOLATIONS</div>
+            <div class="kv">
+              <div class="kv-l">Panoramic X-ray:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ MISSING (code A-07)</div>
+              <div class="kv-l">Clinical narrative:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ MISSING — incomplete (code A-04)</div>
+              <div class="kv-l">Extraction records:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ MISSING — date/reason absent (code H-03)</div>
+              <div class="kv-l">Predetermination:</div><div class="kv-v" style="color:var(--red);font-weight:700">✗ NONE ON FILE (code P-02)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#FEF0EE">🔍</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 02 — Member Eligibility & Benefits</div>
+            <div class="ac-status denied">✗ Waiting period violation — Hard denial</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct low">12%</div><div class="conf-bar"><div class="conf-fill cf-low" style="width:12%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">Member HCSC-TX-55401887 — Darnell Washington, active PPO Bronze TX, Group GRP-WAC-2025-TX, effective January 1 2025. DOS September 5, 2026. Elapsed since effective date: 8 months and 5 days (plan counts to first day of month — effective months: 8).<br><br>Implant waiting period under PPO Bronze TX: 24 months from effective date. Required eligibility date for implants: January 1, 2027. Current DOS September 5, 2026 — 16 months BEFORE eligible date. This is a hard benefit exclusion, not a soft flag. Denial reason code W-12 triggered. No amount of additional documentation can overcome a waiting period violation.</div>
+          <div class="result-box bad">
+            <div class="result-label rl-bad">HARD DENIAL — WAITING PERIOD NOT MET</div>
+            <div class="kv">
+              <div class="kv-l">Plan effective date:</div><div class="kv-v">January 1, 2025</div>
+              <div class="kv-l">Date of service:</div><div class="kv-v">September 5, 2026</div>
+              <div class="kv-l">Elapsed months:</div><div class="kv-v" style="color:var(--red);font-weight:700">8 months — 24 months required (W-12)</div>
+              <div class="kv-l">Eligible after:</div><div class="kv-v">January 1, 2027</div>
+              <div class="kv-l">Override possible:</div><div class="kv-v" style="color:var(--red);font-weight:700">NO — Contractual hard exclusion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="agent-card">
+        <div class="ac-head">
+          <div class="ac-icon" style="background:#FEF0EE">⚖️</div>
+          <div class="ac-info">
+            <div class="ac-name">Agent 03 — Adjudication Decision</div>
+            <div class="ac-status denied">✗ DENIED — 5 denial reason codes issued</div>
+          </div>
+          <div class="ac-conf"><div class="conf-pct high">99%</div><div class="conf-bar"><div class="conf-fill cf-high" style="width:99%"></div></div></div>
+        </div>
+        <div class="ac-body">
+          <div class="thought">Denial criteria met at multiple independent levels. Waiting period violation alone (W-12) is a complete hard denial — not overridable. Additionally: 4 documentation failures (A-04, A-07, H-03, P-02) each independently deniable. Total allowed amount: $0. No partial payment applicable. Generating denial EOB with reason codes, resolution path, and appeal rights. Confidence in denial: 99%.<br><br>Note: D7310 (alveoloplasty) and D9930 (complications) billed in conjunction with D6010 — these are ancillary to the implant procedure. If D6010 is denied, D7310 and D9930 performed in the same operative session are also denied as procedurally dependent. If resubmitted after Jan 1 2027 with full documentation, all codes may be reconsidered.</div>
+          <div class="result-box bad">
+            <div class="result-label rl-bad">ADJUDICATION: DENIED — ALL PROCEDURES</div>
+            <div class="kv">
+              <div class="kv-l">Total billed:</div><div class="kv-v">$3,470.00</div>
+              <div class="kv-l">Total allowed:</div><div class="kv-v" style="font-weight:700;color:var(--red)">$0.00</div>
+              <div class="kv-l">Plan payment:</div><div class="kv-v" style="font-weight:700;color:var(--red)">$0.00</div>
+              <div class="kv-l">Denial codes:</div><div class="kv-v">W-12, A-04, A-07, H-03, P-02</div>
+              <div class="kv-l">Confidence:</div><div class="kv-v" style="color:var(--green);font-weight:700">99% — Unambiguous hard denial</div>
+              <div class="kv-l">Human review:</div><div class="kv-v">Supervisor confirmation required per policy (AI denial &gt;$2,000)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-s" onclick="c2step(0)">← Documents</button>
+        <button class="btn btn-p" onclick="c2step(2)">View Denial EOB →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Denial EOB -->
+    <div id="c2p2" style="display:none">
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-l">Decision</div><div class="kpi-v r">DENIED</div><div class="kpi-s">Auto-generated EOB</div></div>
+        <div class="kpi"><div class="kpi-l">Processing Time</div><div class="kpi-v b">1:52</div><div class="kpi-s">Immediate denial</div></div>
+        <div class="kpi"><div class="kpi-l">Confidence</div><div class="kpi-v g">99%</div><div class="kpi-s">Unambiguous</div></div>
+        <div class="kpi"><div class="kpi-l">Denial Codes</div><div class="kpi-v r">5</div><div class="kpi-s">Independent grounds</div></div>
+      </div>
+
+      <div class="decision-banner denied">
+        <div class="db-stamp stamp-denied">DENIED</div>
+        <div style="font-size:14px;font-weight:700">Claim DG-2026-1003 · D6010 Implant Surgical Placement · Tooth #19</div>
+        <div class="db-grid">
+          <div class="db-cell"><div class="db-cell-label">Total Billed</div><div class="db-cell-val">$3,470.00</div></div>
+          <div class="db-cell"><div class="db-cell-label">Plan Payment</div><div class="db-cell-val" style="color:var(--red)">$0.00</div></div>
+          <div class="db-cell"><div class="db-cell-label">Member Liability</div><div class="db-cell-val">$0.00 (denied)</div></div>
+        </div>
+        <div class="db-rationale">Claim denied on multiple independent grounds. Primary denial: waiting period for implant benefits not met (8 of 24 required months elapsed under PPO Bronze TX). Additional denials: missing radiograph, incomplete clinical narrative, missing extraction documentation, and no predetermination on file. Patient eligible to appeal within 180 days or resubmit with full documentation after January 1, 2027.</div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <div style="font-size:13px;font-weight:700;color:var(--dblue);margin-bottom:10px;">Agent-Generated Denial Reason Codes</div>
+        <div class="denial-code">
+          <div class="dc-code">W-12</div>
+          <div>
+            <div><b>Waiting Period Not Met — Implant Benefits</b><br>Plan requires 24 months from effective date (Jan 1, 2025) before implant benefits are available. Date of service: Sep 5, 2026 — only 8 months elapsed. Eligible after January 1, 2027.</div>
+            <div class="dc-action">→ Resubmit after January 1, 2027 with complete documentation.</div>
+          </div>
+        </div>
+        <div class="denial-code">
+          <div class="dc-code">A-04</div>
+          <div>
+            <div><b>Incomplete Clinical Narrative</b><br>D6010 requires narrative documenting bone density, available ridge width, osseointegration timeline, and medical necessity for implant vs. alternative restoration. Partial narrative submitted does not meet this standard.</div>
+            <div class="dc-action">→ Submit full clinical narrative with osseointegration plan and bone assessment.</div>
+          </div>
+        </div>
+        <div class="denial-code">
+          <div class="dc-code">A-07</div>
+          <div>
+            <div><b>Missing Radiographic Evidence</b><br>Panoramic or periapical X-ray is required for all D6010 claims. Referenced in claim but not attached to submission.</div>
+            <div class="dc-action">→ Attach panoramic or full-mouth series taken within 6 months of implant date.</div>
+          </div>
+        </div>
+        <div class="denial-code">
+          <div class="dc-code">H-03</div>
+          <div>
+            <div><b>Extraction History Not Documented</b><br>Implant placement claim requires documentation of prior extraction: date of extraction, reason, and treating provider. Claim notes extraction occurred at a prior non-network practice — no records submitted.</div>
+            <div class="dc-action">→ Obtain and submit extraction records from prior provider including date, diagnosis, and tooth.</div>
+          </div>
+        </div>
+        <div class="denial-code">
+          <div class="dc-code">P-02</div>
+          <div>
+            <div><b>No Predetermination on File</b><br>PPO Bronze TX requires predetermination for all D6010 claims over $500. No predetermination was requested or approved prior to treatment. This is a plan requirement, not a clinical necessity review.</div>
+            <div class="dc-action">→ Obtain predetermination before scheduling any future implant procedures. Predetermination does not apply retroactively.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="color:var(--dblue)">What Happens Next — This is Where Agentic AI Saves Your Team</div>
+        <div class="grid2" style="font-size:12px;gap:16px">
+          <div>
+            <div style="font-weight:700;color:var(--red);margin-bottom:8px;">Without Agentic AI</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="padding:7px 10px;background:var(--lred);border-radius:5px;">❌ Specialist manually reviews incomplete packet — spends 30–45 min confirming what's missing</div>
+              <div style="padding:7px 10px;background:var(--lred);border-radius:5px;">❌ Waiting period violation not caught until late in review — wasted review time</div>
+              <div style="padding:7px 10px;background:var(--lred);border-radius:5px;">❌ Denial letter typed manually — error-prone, inconsistent reason code application</div>
+              <div style="padding:7px 10px;background:var(--lred);border-radius:5px;">❌ Provider receives vague "information needed" letter — must call to understand all 5 deficiencies</div>
+              <div style="padding:7px 10px;background:var(--lred);border-radius:5px;">❌ No structured resubmission guidance — claim likely resubmitted incomplete again</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:var(--green);margin-bottom:8px;">With Agentic AI</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="padding:7px 10px;background:var(--lgreen);border-radius:5px;">✅ Waiting period violation identified in &lt;30 seconds — no wasted clinical review</div>
+              <div style="padding:7px 10px;background:var(--lgreen);border-radius:5px;">✅ All 5 denial codes generated simultaneously — complete, consistent EOB auto-drafted</div>
+              <div style="padding:7px 10px;background:var(--lgreen);border-radius:5px;">✅ Structured denial EOB with exact resubmission checklist sent to provider portal</div>
+              <div style="padding:7px 10px;background:var(--lgreen);border-radius:5px;">✅ Supervisor only reviews denial summary — not raw claim — saves 35+ min per claim</div>
+              <div style="padding:7px 10px;background:var(--lgreen);border-radius:5px;">✅ Provider receives actionable 5-item checklist with eligibility date Jan 1 2027 — correct resubmission likely</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="audit">
+        <div class="audit-head"><div>TIME</div><div>AGENT</div><div>ACTION</div><div>CONF.</div></div>
+        <div class="audit-row"><div class="ar-time">14:22:01</div><div class="ar-agent">Orchestrator</div><div>Claim DG-2026-1003 ingested. Incomplete packet flagged — 4 of 5 required D6010 documents absent.</div><div class="ar-conf">—</div></div>
+        <div class="audit-row"><div class="ar-time">14:22:04</div><div class="ar-agent">Intake Agent</div><div>D6010, D7310, D9930 parsed. 4 hard-stop document flags: A-04, A-07, H-03, P-02.</div><div class="ar-conf" style="color:var(--red)">28%</div></div>
+        <div class="audit-row"><div class="ar-time">14:22:09</div><div class="ar-agent">Eligibility Agent</div><div>Waiting period check: Plan effective Jan 1 2025. DOS Sep 5 2026. Elapsed 8mo vs required 24mo. W-12 hard denial.</div><div class="ar-conf" style="color:var(--red)">12%</div></div>
+        <div class="audit-row"><div class="ar-time">14:23:53</div><div class="ar-agent">Adjudication Agent</div><div>W-12 = hard denial (non-overridable). Plus A-04, A-07, H-03, P-02. Total allowed $0. EOB drafted.</div><div class="ar-conf" style="color:var(--green)">99%</div></div>
+        <div class="audit-row"><div class="ar-time">14:23:55</div><div class="ar-agent">Audit Agent</div><div>All 5 denial codes written to record. Supervisor review flag set (&gt;$2,000 denial policy). EOB auto-generated.</div><div class="ar-conf">—</div></div>
+        <div class="audit-row" style="background:var(--lred)"><div class="ar-time" style="color:var(--red);font-weight:700">FINAL</div><div class="ar-agent" style="color:var(--red)">Orchestrator</div><div style="color:var(--red);font-weight:600">DENIED — $0 plan payment. 5 reason codes. Supervisor confirmation pending. Processing time 1m 52s.</div><div class="ar-conf" style="color:var(--red)">99%</div></div>
+      </div>
+
+      <div class="nav-btns">
+        <button class="btn btn-s" onclick="c2step(1)">← Agent Processing</button>
+        <button class="btn btn-p" onclick="switchClaim(0)">↺ Back to Claim 1</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /wrap -->
+
+<script>
+// ─ Claim data for sidebar ─────────────────────────────────────
+const CLAIMS = [
+  {
+    docs: [
+      {icon:"📋", name:"ADA Claim Form", meta:"D2740 Crown · 2 pages", badge:"db-ok", badgeText:"Complete"},
+      {icon:"🦷", name:"Radiograph Report", meta:"PA + Bitewing, Tooth #14", badge:"db-ok", badgeText:"Present"},
+    ],
+    flags: [
+      {label:"X-ray", val:"✓ Present", cls:"color:var(--green)"},
+      {label:"Narrative", val:"✓ Complete", cls:"color:var(--green)"},
+      {label:"Predetermination", val:"Not required", cls:"color:var(--grey)"},
+      {label:"COB", val:"✓ None confirmed", cls:"color:var(--green)"},
+      {label:"Waiting Period", val:"✓ Met (30+ months)", cls:"color:var(--green)"},
+    ],
+    status:"APPROVED", statusCls:"color:var(--green);font-weight:700", conf:"Confidence: 97%"
+  },
+  {
+    docs: [
+      {icon:"📋", name:"ADA Claim Form (COB)", meta:"D8090 Ortho · 2 pages", badge:"db-ok", badgeText:"Present"},
+      {icon:"📄", name:"Predetermination", meta:"PDET-2025-008812 · $4,800", badge:"db-ok", badgeText:"Matched"},
+      {icon:"📄", name:"Secondary EOB (Cigna)", meta:"Required for COB", badge:"db-req", badgeText:"MISSING"},
+    ],
+    flags: [
+      {label:"Ortho narrative", val:"✓ Submitted", cls:"color:var(--green)"},
+      {label:"Predetermination", val:"✓ PDET-2025-008812", cls:"color:var(--green)"},
+      {label:"COB — Cigna EOB", val:"✗ Not submitted", cls:"color:var(--red);font-weight:700"},
+      {label:"Waiting Period", val:"✓ Met (42 months)", cls:"color:var(--green)"},
+      {label:"D8090 fee schedule", val:"✓ $5,600 contracted", cls:"color:var(--green)"},
+    ],
+    status:"ESCALATED", statusCls:"color:var(--amber);font-weight:700", conf:"Hold code: COB-03"
+  },
+  {
+    docs: [
+      {icon:"📋", name:"ADA Claim Form", meta:"D6010 Implant · Partial narrative", badge:"db-warn", badgeText:"Partial"},
+      {icon:"🦷", name:"Panoramic X-ray", meta:"Required — not attached", badge:"db-req", badgeText:"MISSING"},
+      {icon:"📄", name:"Clinical Narrative", meta:"Bone density/ridge — not submitted", badge:"db-req", badgeText:"MISSING"},
+      {icon:"📄", name:"Extraction Records", meta:"Prior provider — not submitted", badge:"db-req", badgeText:"MISSING"},
+      {icon:"📋", name:"Predetermination", meta:"Required — none on file", badge:"db-req", badgeText:"MISSING"},
+    ],
+    flags: [
+      {label:"Waiting Period", val:"✗ 8mo of 24 required (W-12)", cls:"color:var(--red);font-weight:700"},
+      {label:"X-ray", val:"✗ Missing (A-07)", cls:"color:var(--red);font-weight:700"},
+      {label:"Clinical narrative", val:"✗ Incomplete (A-04)", cls:"color:var(--red);font-weight:700"},
+      {label:"Extraction records", val:"✗ Absent (H-03)", cls:"color:var(--red);font-weight:700"},
+      {label:"Predetermination", val:"✗ None filed (P-02)", cls:"color:var(--red);font-weight:700"},
+    ],
+    status:"DENIED", statusCls:"color:var(--red);font-weight:700", conf:"Confidence: 99%"
+  }
+];
+
+const DOTS = ["pending","approved","escalated","denied"];
+
+let activeClaim = 0;
+let stepState = [[0],[0],[0]];
+
+function renderSidebar(idx){
+  const c = CLAIMS[idx];
+  // Docs
+  let dl = '';
+  c.docs.forEach(d => {
+    dl += `<div class="doc-item"><div class="doc-icon">${d.icon}</div><div><div class="doc-name">${d.name}</div><div class="doc-meta">${d.meta}</div></div><div class="doc-badge ${d.badge}">${d.badgeText}</div></div>`;
+  });
+  document.getElementById('docList').innerHTML = dl;
+  // Flags
+  let fl = '';
+  c.flags.forEach(f => {
+    fl += `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--lgrey);font-size:11.5px;"><span style="color:var(--grey)">${f.label}</span><span style="${f.cls}">${f.val}</span></div>`;
+  });
+  document.getElementById('flagList').innerHTML = fl;
+  // Status
+  document.getElementById('claimStatus').innerHTML = `<span style="${c.statusCls}">${c.status}</span>`;
+  document.getElementById('claimConf').textContent = c.conf;
+}
+
+function switchClaim(idx){
+  activeClaim = idx;
+  // Queue tabs
+  document.querySelectorAll('.qitem').forEach((el,i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  // Panels
+  document.querySelectorAll('.panel').forEach((el,i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  // Queue dot colors
+  const dotMap = ['approved','escalated','denied'];
+  const dotCls = ['approved','escalated','denied'];
+  document.querySelectorAll('.qi-dot').forEach((el,i) => {
+    el.className = 'qi-dot ' + dotCls[i];
+  });
+  renderSidebar(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Claim 0 step navigation
+function c0step(n){
+  ['c0p0','c0p1','c0p2'].forEach((id,i) => {
+    document.getElementById(id).style.display = i === n ? 'block' : 'none';
+  });
+  ['c0s0','c0s1','c0s2'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.className = 'step-btn' + (i === n ? ' active' : (i < n ? ' done' : ''));
+  });
+}
+function c1step(n){
+  ['c1p0','c1p1','c1p2'].forEach((id,i) => {
+    document.getElementById(id).style.display = i === n ? 'block' : 'none';
+  });
+  ['c1s0','c1s1','c1s2'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.className = 'step-btn' + (i === n ? ' active' : (i < n ? ' done' : ''));
+  });
+}
+function c2step(n){
+  ['c2p0','c2p1','c2p2'].forEach((id,i) => {
+    document.getElementById(id).style.display = i === n ? 'block' : 'none';
+  });
+  ['c2s0','c2s1','c2s2'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.className = 'step-btn' + (i === n ? ' active' : (i < n ? ' done' : ''));
+  });
+}
+
+// Init
+renderSidebar(0);
+</script>
+</body>
+</html>

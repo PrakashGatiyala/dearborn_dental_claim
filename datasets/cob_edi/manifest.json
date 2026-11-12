@@ -1,0 +1,1994 @@
+[
+  {
+    "filename": "COB_SIMPLE_DIVORCED_COURT_OTHER_95004301_CHEN.edi",
+    "case_type": "SIMPLE_COB",
+    "control_no": "95004301",
+    "scenario": "DIVORCED_COURT_OTHER",
+    "cobd_role": "SECONDARY",
+    "cobd_ending": "Rule 3 \u00b7 decree names the other plan",
+    "patient": "LUCAS CHEN",
+    "patient_dob": "2019-09-21",
+    "subscriber": "LINDA CHEN",
+    "subscriber_id": "HCSC-IL-98155546",
+    "plan_id": "PPO-BRONZE-IL",
+    "plan_state": "IL",
+    "plan_annual_max": 1000,
+    "enrollment_date": "2023-06-03",
+    "service_date": "2026-09-19",
+    "provider_name": "RIVERBEND DENTAL ASSOC",
+    "provider_npi": "1760038824",
+    "procedures": [
+      {
+        "cdt_code": "D2740",
+        "description": "CROWN PORCELAIN CERAMIC",
+        "fee": 1616.21,
+        "tooth": "2"
+      }
+    ],
+    "primary_payer": "DELTA DENTAL OF ILLINOIS",
+    "primary_payer_id": "05113",
+    "primary_allowed": 1306.45,
+    "primary_eob_ref": "DELTA-EOB-2026-65183",
+    "billed": 1616.21,
+    "primary_paid": 1045.16,
+    "remaining": 571.05,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 285.52,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "AUTO-ADJUDICATE \u2192 paid",
+    "agent_outcome": "n/a \u2014 never reaches the agent",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Tooth #2: large fracture with recurrent decay beneath an existing restoration; not enough sound structure left for a direct filling. Caries removed, full-coverage ceramic crown indicated.",
+      "treatment_history": [
+        {
+          "date": "2026-03-16",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-03-05",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        },
+        {
+          "date": "2024-12-22",
+          "code": "D2391",
+          "tooth": "2",
+          "note": "Composite filling on #2; now failing"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-04-02",
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-03-24",
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-09-29",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "DELTA-EOB-2026-65183",
+        "payer": "DELTA DENTAL OF ILLINOIS",
+        "billed": 1616.21,
+        "allowed": 1306.45,
+        "paid": 1045.16,
+        "patient_responsibility": 261.29,
+        "contractual_write_off": 309.76,
+        "payment_date": "2026-10-03",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 80% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "DELTA DENTAL OF ILLINOIS",
+        "other_policyholder": "HANNAH CHEN",
+        "other_member_id": "0511341600",
+        "other_policy_effective": "2022-07-29",
+        "patient_relationship": "CHILD",
+        "patient_age": 7,
+        "our_subscriber": "LINDA CHEN",
+        "our_subscriber_dob": "1981-08-22",
+        "other_policyholder_dob": "1980-07-13",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": true,
+        "parents_divorced": true,
+        "scenario": "DIVORCED_COURT_OTHER"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "active": true,
+          "effective": "2022-07-13",
+          "annual_max": 1500,
+          "remaining": 1345.5
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-BRONZE-IL",
+          "active": true,
+          "effective": "2023-06-03",
+          "annual_max": 1000,
+          "remaining": 904.32
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-09-19",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB DELTA-EOB-2026-65183",
+          "date": "2026-10-03",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-09-19",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #2",
+          "date": "2026-09-18",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_LIAB_SAME_SUBSCRIBER_86150402_MENDOZA.edi",
+    "case_type": "LIABILITY_REVIEW",
+    "control_no": "86150402",
+    "scenario": "SAME_SUBSCRIBER",
+    "cobd_role": "UNDETERMINED",
+    "cobd_ending": "Rules 4 & 5 \u00b7 same subscriber on both plans",
+    "patient": "LUCAS MENDOZA",
+    "patient_dob": "2019-09-02",
+    "subscriber": "RAFAEL MENDOZA",
+    "subscriber_id": "HCSC-FL-95562184",
+    "plan_id": "PPO-SILVER-FL",
+    "plan_state": "FL",
+    "plan_annual_max": 2000,
+    "enrollment_date": "2024-05-20",
+    "service_date": "2026-08-31",
+    "provider_name": "DEARBORN FAMILY DENTAL",
+    "provider_npi": "1234567893",
+    "procedures": [
+      {
+        "cdt_code": "D6065",
+        "description": "IMPLANT SUPPORTED CROWN",
+        "fee": 2107.06,
+        "tooth": "31"
+      }
+    ],
+    "primary_payer": "DELTA DENTAL OF ILLINOIS",
+    "primary_payer_id": "05113",
+    "primary_allowed": 1780.91,
+    "primary_eob_ref": "DELTA-EOB-2026-19816",
+    "billed": 2107.06,
+    "primary_paid": 1068.55,
+    "remaining": 1038.51,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 519.25,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "SUSPEND COB-06 (liability undetermined) \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 Rules 4 & 5 \u00b7 same subscriber on both plans; flowchart cannot settle liability alone \u2014 technician applies the rule",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Implant at site #31 integrated and stable; implant-supported crown delivered.",
+      "treatment_history": [
+        {
+          "date": "2026-02-27",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-02-13",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-02-12",
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-02-28",
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-10-02",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "DELTA-EOB-2026-19816",
+        "payer": "DELTA DENTAL OF ILLINOIS",
+        "billed": 2107.06,
+        "allowed": 1780.91,
+        "paid": 1068.55,
+        "patient_responsibility": 712.36,
+        "contractual_write_off": 326.15,
+        "payment_date": "2026-09-14",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 60% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "DELTA DENTAL OF ILLINOIS",
+        "other_policyholder": "RAFAEL MENDOZA",
+        "other_member_id": "0511320765",
+        "other_policy_effective": "2023-06-01",
+        "patient_relationship": "CHILD",
+        "patient_age": 7,
+        "our_subscriber": "RAFAEL MENDOZA",
+        "our_subscriber_dob": "1980-03-13",
+        "other_policyholder_dob": "1979-01-03",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "SAME_SUBSCRIBER"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "active": true,
+          "effective": "2023-09-26",
+          "annual_max": 1500,
+          "remaining": 1487.15
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-SILVER-FL",
+          "active": true,
+          "effective": "2024-05-20",
+          "annual_max": 2000,
+          "remaining": 1985.28
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-08-31",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB DELTA-EOB-2026-19816",
+          "date": "2026-09-14",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-08-31",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #31",
+          "date": "2026-08-30",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Panoramic radiograph",
+          "date": "2026-08-24",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_SIMPLE_SPOUSE_OI_SUBSCRIBER_37357403_MENDOZA.edi",
+    "case_type": "SIMPLE_COB",
+    "control_no": "37357403",
+    "scenario": "SPOUSE_OI_SUBSCRIBER",
+    "cobd_role": "SECONDARY",
+    "cobd_ending": "Node 16 \u00b7 patient is the other insurer's subscriber (Rule 1)",
+    "patient": "VICTOR MENDOZA",
+    "patient_dob": "1989-08-28",
+    "subscriber": "RAFAEL MENDOZA",
+    "subscriber_id": "HCSC-CA-30899529",
+    "plan_id": "PPO-SILVER-CA",
+    "plan_state": "CA",
+    "plan_annual_max": 2000,
+    "enrollment_date": "2024-04-23",
+    "service_date": "2026-08-19",
+    "provider_name": "MIDWEST ORAL HEALTH PC",
+    "provider_npi": "1902845571",
+    "procedures": [
+      {
+        "cdt_code": "D6065",
+        "description": "IMPLANT SUPPORTED CROWN",
+        "fee": 2004.87,
+        "tooth": "14"
+      }
+    ],
+    "primary_payer": "METLIFE DENTAL",
+    "primary_payer_id": "65978",
+    "primary_allowed": 1555.58,
+    "primary_eob_ref": "METLIFE-EOB-2026-25107",
+    "billed": 2004.87,
+    "primary_paid": 933.35,
+    "remaining": 1071.52,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 535.76,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "AUTO-ADJUDICATE \u2192 paid",
+    "agent_outcome": "n/a \u2014 never reaches the agent",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Implant at site #14 integrated and stable; implant-supported crown delivered.",
+      "treatment_history": [
+        {
+          "date": "2026-02-23",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-02-03",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-02-27",
+          "payer": "METLIFE DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-02-01",
+          "payer": "METLIFE DENTAL",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-09-06",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "METLIFE-EOB-2026-25107",
+        "payer": "METLIFE DENTAL",
+        "billed": 2004.87,
+        "allowed": 1555.58,
+        "paid": 933.35,
+        "patient_responsibility": 622.23,
+        "contractual_write_off": 449.29,
+        "payment_date": "2026-09-02",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 60% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "METLIFE DENTAL",
+        "other_policyholder": "VICTOR MENDOZA",
+        "other_member_id": "6597890967",
+        "other_policy_effective": "2024-01-01",
+        "patient_relationship": "SPOUSE",
+        "patient_age": 37,
+        "our_subscriber": "RAFAEL MENDOZA",
+        "our_subscriber_dob": "1982-08-26",
+        "other_policyholder_dob": "1982-06-07",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "SPOUSE_OI_SUBSCRIBER"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "METLIFE DENTAL",
+          "active": true,
+          "effective": "2023-04-23",
+          "annual_max": 1500,
+          "remaining": 1251.13
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-SILVER-CA",
+          "active": true,
+          "effective": "2024-04-23",
+          "annual_max": 2000,
+          "remaining": 1899.72
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-08-19",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB METLIFE-EOB-2026-25107",
+          "date": "2026-09-02",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-08-19",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #14",
+          "date": "2026-08-18",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Panoramic radiograph",
+          "date": "2026-08-12",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_LIAB_SPOUSE_ON_POLICY_57394204_MENDOZA.edi",
+    "case_type": "LIABILITY_REVIEW",
+    "control_no": "57394204",
+    "scenario": "SPOUSE_ON_POLICY",
+    "cobd_role": "UNDETERMINED",
+    "cobd_ending": "Rule 6 \u00b7 spouse on either policy",
+    "patient": "CLAIRE MENDOZA",
+    "patient_dob": "2000-09-02",
+    "subscriber": "RAFAEL MENDOZA",
+    "subscriber_id": "HCSC-NY-58124858",
+    "plan_id": "PPO-GOLD-NY",
+    "plan_state": "NY",
+    "plan_annual_max": 2500,
+    "enrollment_date": "2024-10-11",
+    "service_date": "2026-08-27",
+    "provider_name": "DEARBORN FAMILY DENTAL",
+    "provider_npi": "1234567893",
+    "procedures": [
+      {
+        "cdt_code": "D6010",
+        "description": "IMPLANT BODY ENDOSTEAL",
+        "fee": 2855.05,
+        "tooth": "2"
+      }
+    ],
+    "primary_payer": "CIGNA DENTAL PPO",
+    "primary_payer_id": "62308",
+    "primary_allowed": 2320.13,
+    "primary_eob_ref": "CIGNA-EOB-2026-90634",
+    "billed": 2855.05,
+    "primary_paid": 1624.09,
+    "remaining": 1230.96,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 615.48,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "SUSPEND COB-06 (liability undetermined) \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 Rule 6 \u00b7 spouse on either policy; flowchart cannot settle liability alone \u2014 technician applies the rule",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Tooth #2 missing after earlier extraction; adequate bone volume confirmed on imaging. Endosteal implant placed.",
+      "treatment_history": [
+        {
+          "date": "2026-02-23",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-03-10",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-03-05",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-03-03",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-09-15",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "CIGNA-EOB-2026-90634",
+        "payer": "CIGNA DENTAL PPO",
+        "billed": 2855.05,
+        "allowed": 2320.13,
+        "paid": 1624.09,
+        "patient_responsibility": 696.04,
+        "contractual_write_off": 534.92,
+        "payment_date": "2026-09-10",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 70% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "CIGNA DENTAL PPO",
+        "other_policyholder": "RACHEL MENDOZA",
+        "other_member_id": "6230816760",
+        "other_policy_effective": "2024-01-17",
+        "patient_relationship": "SPOUSE",
+        "patient_age": 26,
+        "our_subscriber": "RAFAEL MENDOZA",
+        "our_subscriber_dob": "1982-04-24",
+        "other_policyholder_dob": "1980-03-29",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "SPOUSE_ON_POLICY"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "CIGNA DENTAL PPO",
+          "active": true,
+          "effective": "2024-02-22",
+          "annual_max": 1500,
+          "remaining": 1207.61
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-GOLD-NY",
+          "active": true,
+          "effective": "2024-10-11",
+          "annual_max": 2500,
+          "remaining": 2246.49
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-08-27",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB CIGNA-EOB-2026-90634",
+          "date": "2026-09-10",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-08-27",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #2",
+          "date": "2026-08-26",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Panoramic radiograph",
+          "date": "2026-08-20",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_LIAB_CHILD_BIRTHDAY_OURS_78794205_SZABO.edi",
+    "case_type": "LIABILITY_REVIEW",
+    "control_no": "78794205",
+    "scenario": "CHILD_BIRTHDAY_OURS",
+    "cobd_role": "PRIMARY",
+    "cobd_ending": "Rule 2 \u00b7 our subscriber's birthday is earlier",
+    "patient": "ZOE SZABO",
+    "patient_dob": "2012-09-09",
+    "subscriber": "PETER SZABO",
+    "subscriber_id": "HCSC-FL-49018319",
+    "plan_id": "PPO-SILVER-FL",
+    "plan_state": "FL",
+    "plan_annual_max": 2000,
+    "enrollment_date": "2023-05-22",
+    "service_date": "2026-09-06",
+    "provider_name": "MIDWEST ORAL HEALTH PC",
+    "provider_npi": "1902845571",
+    "procedures": [
+      {
+        "cdt_code": "D6010",
+        "description": "IMPLANT BODY ENDOSTEAL",
+        "fee": 3082.17,
+        "tooth": "3"
+      }
+    ],
+    "primary_payer": "CIGNA DENTAL PPO",
+    "primary_payer_id": "62308",
+    "primary_allowed": 2612.11,
+    "primary_eob_ref": "CIGNA-EOB-2026-89180",
+    "billed": 3082.17,
+    "primary_paid": 1828.48,
+    "remaining": 1253.69,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 626.85,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "SUSPEND COB-05 (HCSC is primary) \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 Rule 2 \u00b7 our subscriber's birthday is earlier; HCSC is primary \u2014 reprocess and recover the other payer's payment",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Tooth #3 missing after earlier extraction; adequate bone volume confirmed on imaging. Endosteal implant placed.",
+      "treatment_history": [
+        {
+          "date": "2026-02-23",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-02-19",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-03-01",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-03-06",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-10-11",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "CIGNA-EOB-2026-89180",
+        "payer": "CIGNA DENTAL PPO",
+        "billed": 3082.17,
+        "allowed": 2612.11,
+        "paid": 1828.48,
+        "patient_responsibility": 783.63,
+        "contractual_write_off": 470.06,
+        "payment_date": "2026-09-20",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 70% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "CIGNA DENTAL PPO",
+        "other_policyholder": "RACHEL SZABO",
+        "other_member_id": "6230814868",
+        "other_policy_effective": "2022-12-01",
+        "patient_relationship": "CHILD",
+        "patient_age": 14,
+        "our_subscriber": "PETER SZABO",
+        "our_subscriber_dob": "1981-12-21",
+        "other_policyholder_dob": "1980-12-31",
+        "birthday_rule_primary": "OUR PLAN",
+        "birthday_rule_consistent": false,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "CHILD_BIRTHDAY_OURS"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "CIGNA DENTAL PPO",
+          "active": true,
+          "effective": "2023-03-11",
+          "annual_max": 1500,
+          "remaining": 1154.26
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-SILVER-FL",
+          "active": true,
+          "effective": "2023-05-22",
+          "annual_max": 2000,
+          "remaining": 1789.92
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-09-06",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB CIGNA-EOB-2026-89180",
+          "date": "2026-09-20",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-09-06",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #3",
+          "date": "2026-09-05",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Panoramic radiograph",
+          "date": "2026-08-30",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_LIAB_SELF_OUR_SUBSCRIBER_35223006_SZABO.edi",
+    "case_type": "LIABILITY_REVIEW",
+    "control_no": "35223006",
+    "scenario": "SELF_OUR_SUBSCRIBER",
+    "cobd_role": "PRIMARY",
+    "cobd_ending": "Node 14 \u00b7 patient is our subscriber (Rule 1)",
+    "patient": "PETER SZABO",
+    "patient_dob": "1984-06-20",
+    "subscriber": "PETER SZABO",
+    "subscriber_id": "HCSC-TX-86971370",
+    "plan_id": "PPO-GOLD-TX",
+    "plan_state": "TX",
+    "plan_annual_max": 2000,
+    "enrollment_date": "2023-06-17",
+    "service_date": "2026-08-13",
+    "provider_name": "MIDWEST ORAL HEALTH PC",
+    "provider_npi": "1902845571",
+    "procedures": [
+      {
+        "cdt_code": "D4341",
+        "description": "PERIO SCALING ROOT PLANE 4+",
+        "fee": 347.56,
+        "tooth": "3"
+      }
+    ],
+    "primary_payer": "AETNA DENTAL",
+    "primary_payer_id": "60054",
+    "primary_allowed": 261.86,
+    "primary_eob_ref": "AETNA-EOB-2026-15234",
+    "billed": 347.56,
+    "primary_paid": 209.49,
+    "remaining": 138.07,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 69.03,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "SUSPEND COB-05 (HCSC is primary) \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 Node 14 \u00b7 patient is our subscriber (Rule 1); HCSC is primary \u2014 reprocess and recover the other payer's payment",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Generalised 5-6 mm pockets with bleeding on probing; radiographic bone loss. Scaling and root planing, four or more teeth in the quadrant.",
+      "treatment_history": [
+        {
+          "date": "2026-02-17",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-02-05",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-01-26",
+          "payer": "AETNA DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-01-29",
+          "payer": "AETNA DENTAL",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-09-07",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "AETNA-EOB-2026-15234",
+        "payer": "AETNA DENTAL",
+        "billed": 347.56,
+        "allowed": 261.86,
+        "paid": 209.49,
+        "patient_responsibility": 52.37,
+        "contractual_write_off": 85.7,
+        "payment_date": "2026-08-27",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 80% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "AETNA DENTAL",
+        "other_policyholder": "HELEN SZABO",
+        "other_member_id": "6005479226",
+        "other_policy_effective": "2022-06-24",
+        "patient_relationship": "SELF",
+        "patient_age": 39,
+        "our_subscriber": "PETER SZABO",
+        "our_subscriber_dob": "1984-06-20",
+        "other_policyholder_dob": "1982-03-19",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "SELF_OUR_SUBSCRIBER"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "AETNA DENTAL",
+          "active": true,
+          "effective": "2023-03-22",
+          "annual_max": 1500,
+          "remaining": 1302.04
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-GOLD-TX",
+          "active": true,
+          "effective": "2023-06-17",
+          "annual_max": 2000,
+          "remaining": 1788.61
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-08-13",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB AETNA-EOB-2026-15234",
+          "date": "2026-08-27",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-08-13",
+          "pages": 1
+        },
+        {
+          "type": "PERIO",
+          "name": "Periodontal charting",
+          "date": "2026-08-13",
+          "pages": 2
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_LIAB_RESTRICTED_GROUP_26094607_RAGHUNATHAN.edi",
+    "case_type": "LIABILITY_REVIEW",
+    "control_no": "26094607",
+    "scenario": "RESTRICTED_GROUP",
+    "cobd_role": "UNDETERMINED",
+    "cobd_ending": "Node 5 \u00b7 restricted group \u2192 Security",
+    "patient": "NOAH RAGHUNATHAN",
+    "patient_dob": "2015-08-29",
+    "subscriber": "PRIYA RAGHUNATHAN",
+    "subscriber_id": "HCSC-NY-74100665",
+    "plan_id": "PPO-GOLD-NY",
+    "plan_state": "NY",
+    "plan_annual_max": 2500,
+    "enrollment_date": "2023-08-16",
+    "service_date": "2026-08-26",
+    "provider_name": "LAKESHORE DENTAL GROUP",
+    "provider_npi": "1548327690",
+    "procedures": [
+      {
+        "cdt_code": "D2750",
+        "description": "CROWN PORCELAIN FUSED METAL",
+        "fee": 1263.38,
+        "tooth": "7"
+      }
+    ],
+    "primary_payer": "CIGNA DENTAL PPO",
+    "primary_payer_id": "62308",
+    "primary_allowed": 1024.77,
+    "primary_eob_ref": "CIGNA-EOB-2026-99575",
+    "billed": 1263.38,
+    "primary_paid": 717.34,
+    "remaining": 546.04,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 273.02,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "SUSPEND COB-06 (liability undetermined) \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 Node 5 \u00b7 restricted group \u2192 Security; flowchart cannot settle liability alone \u2014 technician applies the rule",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Tooth #7: extensive coronal breakdown, cusp fracture. Porcelain-fused-to-metal crown indicated for strength under occlusal load.",
+      "treatment_history": [
+        {
+          "date": "2026-02-18",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-03-01",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        },
+        {
+          "date": "2024-03-05",
+          "code": "D2391",
+          "tooth": "7",
+          "note": "Composite filling on #7; now failing"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-03-04",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-02-10",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-08-23",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "CIGNA-EOB-2026-99575",
+        "payer": "CIGNA DENTAL PPO",
+        "billed": 1263.38,
+        "allowed": 1024.77,
+        "paid": 717.34,
+        "patient_responsibility": 307.43,
+        "contractual_write_off": 238.61,
+        "payment_date": "2026-09-09",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 70% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "CIGNA DENTAL PPO",
+        "other_policyholder": "SAMUEL RAGHUNATHAN",
+        "other_member_id": "6230821793",
+        "other_policy_effective": "2023-04-27",
+        "patient_relationship": "CHILD",
+        "patient_age": 11,
+        "our_subscriber": "PRIYA RAGHUNATHAN",
+        "our_subscriber_dob": "1980-12-03",
+        "other_policyholder_dob": "1980-09-10",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "RESTRICTED_GROUP"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "CIGNA DENTAL PPO",
+          "active": true,
+          "effective": "2023-02-26",
+          "annual_max": 1500,
+          "remaining": 1388.7
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-GOLD-NY",
+          "active": true,
+          "effective": "2023-08-16",
+          "annual_max": 2500,
+          "remaining": 2481.37
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-08-26",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB CIGNA-EOB-2026-99575",
+          "date": "2026-09-09",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-08-26",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #7",
+          "date": "2026-08-25",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_LIAB_DIVORCED_NO_ORDER_37038308_RIVERA.edi",
+    "case_type": "LIABILITY_REVIEW",
+    "control_no": "37038308",
+    "scenario": "DIVORCED_NO_ORDER",
+    "cobd_role": "UNDETERMINED",
+    "cobd_ending": "Rule 3 \u00b7 no court decree on file",
+    "patient": "MAYA RIVERA",
+    "patient_dob": "2014-10-02",
+    "subscriber": "CARLOS RIVERA",
+    "subscriber_id": "HCSC-FL-62610533",
+    "plan_id": "PPO-SILVER-FL",
+    "plan_state": "FL",
+    "plan_annual_max": 2000,
+    "enrollment_date": "2024-11-29",
+    "service_date": "2026-09-29",
+    "provider_name": "MIDWEST ORAL HEALTH PC",
+    "provider_npi": "1902845571",
+    "procedures": [
+      {
+        "cdt_code": "D3330",
+        "description": "ENDODONTIC THERAPY MOLAR",
+        "fee": 1131.7,
+        "tooth": "2"
+      }
+    ],
+    "primary_payer": "AETNA DENTAL",
+    "primary_payer_id": "60054",
+    "primary_allowed": 885.84,
+    "primary_eob_ref": "AETNA-EOB-2026-35999",
+    "billed": 1131.7,
+    "primary_paid": 442.92,
+    "remaining": 688.78,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 344.39,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "SUSPEND COB-06 (liability undetermined) \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 Rule 3 \u00b7 no court decree on file; flowchart cannot settle liability alone \u2014 technician applies the rule",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Tooth #2: lingering cold sensitivity, positive percussion, periapical radiolucency. Irreversible pulpitis; molar root canal therapy performed.",
+      "treatment_history": [
+        {
+          "date": "2026-03-31",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-03-13",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        },
+        {
+          "date": "2024-08-01",
+          "code": "D2391",
+          "tooth": "2",
+          "note": "Composite filling on #2; now failing"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-03-20",
+          "payer": "AETNA DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-03-28",
+          "payer": "AETNA DENTAL",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-10-31",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "AETNA-EOB-2026-35999",
+        "payer": "AETNA DENTAL",
+        "billed": 1131.7,
+        "allowed": 885.84,
+        "paid": 442.92,
+        "patient_responsibility": 442.92,
+        "contractual_write_off": 245.86,
+        "payment_date": "2026-10-13",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 50% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "AETNA DENTAL",
+        "other_policyholder": "MICHELLE RIVERA",
+        "other_member_id": "6005456267",
+        "other_policy_effective": "2024-02-08",
+        "patient_relationship": "CHILD",
+        "patient_age": 12,
+        "our_subscriber": "CARLOS RIVERA",
+        "our_subscriber_dob": "1989-08-12",
+        "other_policyholder_dob": "1987-07-02",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": true,
+        "scenario": "DIVORCED_NO_ORDER"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "AETNA DENTAL",
+          "active": true,
+          "effective": "2024-09-06",
+          "annual_max": 1500,
+          "remaining": 1355.06
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-SILVER-FL",
+          "active": true,
+          "effective": "2024-11-29",
+          "annual_max": 2000,
+          "remaining": 1906.41
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-09-29",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB AETNA-EOB-2026-35999",
+          "date": "2026-10-13",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-09-29",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #2",
+          "date": "2026-09-28",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_SIMPLE_CHILD_BIRTHDAY_OTHER_97517109_FUJIWARA.edi",
+    "case_type": "SIMPLE_COB",
+    "control_no": "97517109",
+    "scenario": "CHILD_BIRTHDAY_OTHER",
+    "cobd_role": "SECONDARY",
+    "cobd_ending": "Rule 2 \u00b7 other parent's birthday is earlier",
+    "patient": "LIAM FUJIWARA",
+    "patient_dob": "2011-09-26",
+    "subscriber": "NAOMI FUJIWARA",
+    "subscriber_id": "HCSC-AZ-34489990",
+    "plan_id": "PPO-GOLD-AZ",
+    "plan_state": "AZ",
+    "plan_annual_max": 2500,
+    "enrollment_date": "2024-04-17",
+    "service_date": "2026-09-22",
+    "provider_name": "DEARBORN FAMILY DENTAL",
+    "provider_npi": "1234567893",
+    "procedures": [
+      {
+        "cdt_code": "D3330",
+        "description": "ENDODONTIC THERAPY MOLAR",
+        "fee": 1271.86,
+        "tooth": "3"
+      }
+    ],
+    "primary_payer": "AETNA DENTAL",
+    "primary_payer_id": "60054",
+    "primary_allowed": 1052.38,
+    "primary_eob_ref": "AETNA-EOB-2026-98561",
+    "billed": 1271.86,
+    "primary_paid": 841.9,
+    "remaining": 429.96,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 214.98,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "AUTO-ADJUDICATE \u2192 paid",
+    "agent_outcome": "n/a \u2014 never reaches the agent",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Tooth #3: lingering cold sensitivity, positive percussion, periapical radiolucency. Irreversible pulpitis; molar root canal therapy performed.",
+      "treatment_history": [
+        {
+          "date": "2026-03-20",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-03-23",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        },
+        {
+          "date": "2024-11-14",
+          "code": "D2391",
+          "tooth": "3",
+          "note": "Composite filling on #3; now failing"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-03-19",
+          "payer": "AETNA DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-03-23",
+          "payer": "AETNA DENTAL",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-09-25",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "AETNA-EOB-2026-98561",
+        "payer": "AETNA DENTAL",
+        "billed": 1271.86,
+        "allowed": 1052.38,
+        "paid": 841.9,
+        "patient_responsibility": 210.48,
+        "contractual_write_off": 219.48,
+        "payment_date": "2026-10-06",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 80% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "AETNA DENTAL",
+        "other_policyholder": "DANIEL FUJIWARA",
+        "other_member_id": "6005462151",
+        "other_policy_effective": "2023-08-27",
+        "patient_relationship": "CHILD",
+        "patient_age": 15,
+        "our_subscriber": "NAOMI FUJIWARA",
+        "our_subscriber_dob": "1981-12-10",
+        "other_policyholder_dob": "1980-08-22",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "CHILD_BIRTHDAY_OTHER"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "AETNA DENTAL",
+          "active": true,
+          "effective": "2023-12-24",
+          "annual_max": 1500,
+          "remaining": 1404.24
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-GOLD-AZ",
+          "active": true,
+          "effective": "2024-04-17",
+          "annual_max": 2500,
+          "remaining": 2429.93
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-09-22",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB AETNA-EOB-2026-98561",
+          "date": "2026-10-06",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-09-22",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #3",
+          "date": "2026-09-21",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_LIAB_DIVORCED_COURT_OURS_63230410_BRENNAN.edi",
+    "case_type": "LIABILITY_REVIEW",
+    "control_no": "63230410",
+    "scenario": "DIVORCED_COURT_OURS",
+    "cobd_role": "PRIMARY",
+    "cobd_ending": "Rule 3 \u00b7 decree names our plan",
+    "patient": "LIAM BRENNAN",
+    "patient_dob": "2011-10-05",
+    "subscriber": "THOMAS BRENNAN",
+    "subscriber_id": "HCSC-AZ-80057880",
+    "plan_id": "PPO-GOLD-AZ",
+    "plan_state": "AZ",
+    "plan_annual_max": 2500,
+    "enrollment_date": "2025-05-17",
+    "service_date": "2026-10-01",
+    "provider_name": "RIVERBEND DENTAL ASSOC",
+    "provider_npi": "1760038824",
+    "procedures": [
+      {
+        "cdt_code": "D3330",
+        "description": "ENDODONTIC THERAPY MOLAR",
+        "fee": 1090.88,
+        "tooth": "30"
+      },
+      {
+        "cdt_code": "D6010",
+        "description": "IMPLANT BODY ENDOSTEAL",
+        "fee": 2874.05,
+        "tooth": "31"
+      }
+    ],
+    "primary_payer": "CIGNA DENTAL PPO",
+    "primary_payer_id": "62308",
+    "primary_allowed": 2953.99,
+    "primary_eob_ref": "CIGNA-EOB-2026-96114",
+    "billed": 3964.93,
+    "primary_paid": 1772.39,
+    "remaining": 2192.54,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 1096.27,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "LUMP_SUM",
+    "secondary_monthly_cap": null,
+    "secondary_term_months": null,
+    "as400_outcome": "SUSPEND COB-05 (HCSC is primary) \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 Rule 3 \u00b7 decree names our plan; HCSC is primary \u2014 reprocess and recover the other payer's payment",
+    "months_needed": null,
+    "details": {
+      "clinical_narrative": "Tooth #30: lingering cold sensitivity, positive percussion, periapical radiolucency. Irreversible pulpitis; molar root canal therapy performed. Tooth #31 missing after earlier extraction; adequate bone volume confirmed on imaging. Endosteal implant placed.",
+      "treatment_history": [
+        {
+          "date": "2026-03-19",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-04-11",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        },
+        {
+          "date": "2024-06-08",
+          "code": "D2391",
+          "tooth": "30",
+          "note": "Composite filling on #30; now failing"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-04-10",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-04-10",
+          "payer": "CIGNA DENTAL PPO",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-10-07",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "CIGNA-EOB-2026-96114",
+        "payer": "CIGNA DENTAL PPO",
+        "billed": 3964.93,
+        "allowed": 2953.99,
+        "paid": 1772.39,
+        "patient_responsibility": 1181.6,
+        "contractual_write_off": 1010.94,
+        "payment_date": "2026-10-15",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 60% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "CIGNA DENTAL PPO",
+        "other_policyholder": "MICHELLE BRENNAN",
+        "other_member_id": "6230891677",
+        "other_policy_effective": "2024-11-27",
+        "patient_relationship": "CHILD",
+        "patient_age": 15,
+        "our_subscriber": "THOMAS BRENNAN",
+        "our_subscriber_dob": "1985-06-24",
+        "other_policyholder_dob": "1985-04-01",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": true,
+        "parents_divorced": true,
+        "scenario": "DIVORCED_COURT_OURS"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "CIGNA DENTAL PPO",
+          "active": true,
+          "effective": "2025-01-09",
+          "annual_max": 1500,
+          "remaining": 1271.87
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-GOLD-AZ",
+          "active": true,
+          "effective": "2025-05-17",
+          "annual_max": 2500,
+          "remaining": 2439.02
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-10-01",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB CIGNA-EOB-2026-96114",
+          "date": "2026-10-15",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-10-01",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #30",
+          "date": "2026-09-30",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Panoramic radiograph",
+          "date": "2026-09-24",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_XPLAN_MEDICARE_SUPPLEMENT_63137111_HAYES.edi",
+    "case_type": "CROSS_PLAN_COB",
+    "control_no": "63137111",
+    "scenario": "MEDICARE_SUPPLEMENT",
+    "cobd_role": "SECONDARY",
+    "cobd_ending": "Nodes 9\u219211\u219210 \u00b7 Medicare / Supplement pays first",
+    "patient": "ELEANOR HAYES",
+    "patient_dob": "1987-12-28",
+    "subscriber": "ELEANOR HAYES",
+    "subscriber_id": "HCSC-CA-52132463",
+    "plan_id": "PPO-SILVER-CA",
+    "plan_state": "CA",
+    "plan_annual_max": 2000,
+    "enrollment_date": "2024-04-20",
+    "service_date": "2026-09-01",
+    "provider_name": "DEARBORN FAMILY DENTAL",
+    "provider_npi": "1234567893",
+    "procedures": [
+      {
+        "cdt_code": "D6065",
+        "description": "IMPLANT SUPPORTED CROWN",
+        "fee": 1999.47,
+        "tooth": "19"
+      }
+    ],
+    "primary_payer": "MEDICARE PART B",
+    "primary_payer_id": "00882",
+    "primary_allowed": 1491.45,
+    "primary_eob_ref": "MEDICARE-EOB-2026-12363",
+    "billed": 1999.47,
+    "primary_paid": 1044.02,
+    "remaining": 955.45,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 477.73,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "MONTHLY",
+    "secondary_monthly_cap": 20.0,
+    "secondary_term_months": 18,
+    "as400_outcome": "SUSPEND COB-03 \u2192 refer to agent",
+    "agent_outcome": "NEEDS_REVIEW \u2014 needs 24 months, term is only 18; override required",
+    "months_needed": 24,
+    "details": {
+      "clinical_narrative": "Implant at site #19 integrated and stable; implant-supported crown delivered.",
+      "treatment_history": [
+        {
+          "date": "2026-03-15",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-03-06",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-02-15",
+          "payer": "MEDICARE PART B",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-03-13",
+          "payer": "MEDICARE PART B",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-09-04",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "MEDICARE-EOB-2026-12363",
+        "payer": "MEDICARE PART B",
+        "billed": 1999.47,
+        "allowed": 1491.45,
+        "paid": 1044.02,
+        "patient_responsibility": 447.43,
+        "contractual_write_off": 508.02,
+        "payment_date": "2026-09-15",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 70% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "MEDICARE PART B",
+        "other_policyholder": "ELEANOR HAYES",
+        "other_member_id": "0088291697",
+        "other_policy_effective": "2023-05-21",
+        "patient_relationship": "SELF",
+        "patient_age": 72,
+        "our_subscriber": "ELEANOR HAYES",
+        "our_subscriber_dob": "1987-12-28",
+        "other_policyholder_dob": "1986-10-16",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "MEDICARE_SUPPLEMENT"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "MEDICARE PART B",
+          "active": true,
+          "effective": "2023-07-01",
+          "annual_max": 1500,
+          "remaining": 1318.26
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-SILVER-CA",
+          "active": true,
+          "effective": "2024-04-20",
+          "annual_max": 2000,
+          "remaining": 1809.99
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-09-01",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB MEDICARE-EOB-2026-12363",
+          "date": "2026-09-15",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-09-01",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #19",
+          "date": "2026-08-31",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Panoramic radiograph",
+          "date": "2026-08-25",
+          "pages": 1
+        }
+      ]
+    }
+  },
+  {
+    "filename": "COB_XPLAN_CHILD_BIRTHDAY_OTHER_41757912_KOWALSKI.edi",
+    "case_type": "CROSS_PLAN_COB",
+    "control_no": "41757912",
+    "scenario": "CHILD_BIRTHDAY_OTHER",
+    "cobd_role": "SECONDARY",
+    "cobd_ending": "Rule 2 \u00b7 other parent's birthday is earlier",
+    "patient": "MAYA KOWALSKI",
+    "patient_dob": "2014-08-28",
+    "subscriber": "HENRY KOWALSKI",
+    "subscriber_id": "HCSC-AZ-15666415",
+    "plan_id": "PPO-GOLD-AZ",
+    "plan_state": "AZ",
+    "plan_annual_max": 2500,
+    "enrollment_date": "2024-05-25",
+    "service_date": "2026-08-25",
+    "provider_name": "DEARBORN FAMILY DENTAL",
+    "provider_npi": "1234567893",
+    "procedures": [
+      {
+        "cdt_code": "D6065",
+        "description": "IMPLANT SUPPORTED CROWN",
+        "fee": 2144.4,
+        "tooth": "14"
+      },
+      {
+        "cdt_code": "D3330",
+        "description": "ENDODONTIC THERAPY MOLAR",
+        "fee": 1125.28,
+        "tooth": "31"
+      }
+    ],
+    "primary_payer": "DELTA DENTAL OF ILLINOIS",
+    "primary_payer_id": "05113",
+    "primary_allowed": 2744.41,
+    "primary_eob_ref": "DELTA-EOB-2026-90204",
+    "billed": 3269.68,
+    "primary_paid": 2195.53,
+    "remaining": 1074.15,
+    "secondary_coinsurance": 50,
+    "secondary_owed": 537.08,
+    "primary_settlement": "LUMP_SUM",
+    "secondary_settlement": "MONTHLY",
+    "secondary_monthly_cap": 105.0,
+    "secondary_term_months": 6,
+    "as400_outcome": "SUSPEND COB-03 \u2192 refer to agent",
+    "agent_outcome": "APPROVED \u2014 clears in 6 of 6 months",
+    "months_needed": 6,
+    "details": {
+      "clinical_narrative": "Implant at site #14 integrated and stable; implant-supported crown delivered. Tooth #31: lingering cold sensitivity, positive percussion, periapical radiolucency. Irreversible pulpitis; molar root canal therapy performed.",
+      "treatment_history": [
+        {
+          "date": "2026-03-06",
+          "code": "D1110",
+          "tooth": "",
+          "note": "Adult prophylaxis; no concerns recorded"
+        },
+        {
+          "date": "2026-03-01",
+          "code": "D0274",
+          "tooth": "",
+          "note": "Four bitewing radiographs"
+        }
+      ],
+      "prior_claims": [
+        {
+          "date": "2026-02-11",
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 100.0
+        },
+        {
+          "date": "2026-02-11",
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "code": "D0274",
+          "billed": 70.0,
+          "paid": 56.0
+        },
+        {
+          "date": "2025-09-04",
+          "payer": "HCSC DENTAL",
+          "code": "D1110",
+          "billed": 125.0,
+          "paid": 62.5
+        }
+      ],
+      "eob_summary": {
+        "eob_ref": "DELTA-EOB-2026-90204",
+        "payer": "DELTA DENTAL OF ILLINOIS",
+        "billed": 3269.68,
+        "allowed": 2744.41,
+        "paid": 2195.53,
+        "patient_responsibility": 548.88,
+        "contractual_write_off": 525.27,
+        "payment_date": "2026-09-08",
+        "payment_method": "EFT",
+        "settlement": "LUMP_SUM",
+        "remark_codes": [
+          "CO-45 Charge exceeds fee schedule (contractual write-off)",
+          "PR-2 Coinsurance \u2014 plan paid 80% of allowed"
+        ]
+      },
+      "cob_questionnaire": {
+        "other_coverage": true,
+        "other_payer": "DELTA DENTAL OF ILLINOIS",
+        "other_policyholder": "ANDREW KOWALSKI",
+        "other_member_id": "0511325130",
+        "other_policy_effective": "2023-09-29",
+        "patient_relationship": "CHILD",
+        "patient_age": 12,
+        "our_subscriber": "HENRY KOWALSKI",
+        "our_subscriber_dob": "1990-08-24",
+        "other_policyholder_dob": "1990-06-26",
+        "birthday_rule_primary": "OTHER PLAN",
+        "birthday_rule_consistent": true,
+        "court_order": false,
+        "parents_divorced": false,
+        "scenario": "CHILD_BIRTHDAY_OTHER"
+      },
+      "eligibility": {
+        "primary": {
+          "payer": "DELTA DENTAL OF ILLINOIS",
+          "active": true,
+          "effective": "2023-07-05",
+          "annual_max": 1500,
+          "remaining": 1327.74
+        },
+        "secondary": {
+          "payer": "HCSC DENTAL",
+          "plan_id": "PPO-GOLD-AZ",
+          "active": true,
+          "effective": "2024-05-25",
+          "annual_max": 2500,
+          "remaining": 2251.98
+        }
+      },
+      "attachments": [
+        {
+          "type": "NARRATIVE",
+          "name": "Clinical narrative",
+          "date": "2026-08-25",
+          "pages": 1
+        },
+        {
+          "type": "EOB",
+          "name": "Primary EOB DELTA-EOB-2026-90204",
+          "date": "2026-09-08",
+          "pages": 2
+        },
+        {
+          "type": "AOB",
+          "name": "Signed assignment of benefits",
+          "date": "2026-08-25",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Periapical radiograph, tooth #14",
+          "date": "2026-08-24",
+          "pages": 1
+        },
+        {
+          "type": "XRAY",
+          "name": "Panoramic radiograph",
+          "date": "2026-08-18",
+          "pages": 1
+        }
+      ]
+    }
+  }
+]

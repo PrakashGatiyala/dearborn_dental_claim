@@ -1,0 +1,108 @@
+
+============================== PAGE 1 ==============================
+ADA DENTAL CLAIM FORM
+Original Claim — Commercial PPO
+DG-2026-1001
+Dearborn Group / HCSC  |  Commercial
+CONFIDENTIAL — For adjudication purposes only. Dearborn Group / HCSC. Not a guarantee of benefits.
+Page 1
+SECTION A — INSURED / SUBSCRIBER INFORMATION
+Subscriber Name
+Patricia Nguyen
+Subscriber ID
+HCSC-TX-88301124
+Date of Birth
+March 14, 1978
+Employer
+Meridian Healthcare Services, LLC
+Group Number
+GRP-MHS-2024-TX
+Plan Type
+Commercial PPO — HCSC PPO Silver TX
+Relationship to Patient
+Self
+Effective Date
+January 1, 2024
+SECTION B — PATIENT INFORMATION
+Patient Name
+Patricia Nguyen
+Patient Date of Birth
+March 14, 1978 (Age: 48)
+Sex
+Female
+Address
+4821 Creekview Lane, Plano, TX 75024
+Relationship to Subscriber
+Self
+Secondary Coverage
+None
+SECTION C — TREATING PROVIDER
+Provider Name
+Dr. Sandra Okonkwo, DDS
+Practice
+Plano Family Dental Associates
+NPI Number
+1098765432
+License Number
+TX-DDS-29847
+Specialty
+General Dentistry
+Network Status
+In-Network — HCSC PPO Silver TX
+Tax ID
+75-3341209
+Address
+3301 Preston Road, Suite 200, Plano, TX 75093
+Phone
+(972) 555-0184
+SECTION D — PROCEDURES
+Date of Service
+CDT Code
+Tooth #
+Surface
+Description
+Billed Amount
+08/28/2026
+D2740
+14
+Facial/Lingual
+Crown – porcelain/ceramic substrate
+$1,450.00
+08/28/2026
+D0120
+—
+—
+Periodic oral evaluation
+$65.00
+
+
+============================== PAGE 2 ==============================
+ADA DENTAL CLAIM FORM
+Original Claim — Commercial PPO
+DG-2026-1001
+Dearborn Group / HCSC  |  Commercial
+CONFIDENTIAL — For adjudication purposes only. Dearborn Group / HCSC. Not a guarantee of benefits.
+Page 2
+Total Billed Amount
+$1,515.00
+Predetermination on File
+No — amount below predetermination threshold
+Place of Service
+11 — Office
+Date Claim Submitted
+September 5, 2026
+SECTION E — DIAGNOSIS / NARRATIVE
+Tooth #14 (upper left first molar) presented with extensive decay involving the mesial, occlusal, and distal surfaces following
+removal of a failing amalgam restoration placed approximately 12 years ago. Remaining tooth structure was insufficient to support
+an inlay or onlay. A full-coverage porcelain crown (D2740) was placed following crown preparation, impression, and temporary
+placement at the prior visit (D2940, billed separately Aug 14). Patient is in good periodontal health; no active infection at time of
+definitive placement. Periodic evaluation confirmed satisfactory seating and occlusal adjustment.
+SECTION F — ATTACHMENTS
+Periapical X-ray
+Attached — tooth #14 pre-treatment (Aug 14, 2026)
+Bitewing X-ray
+Attached — posterior bitewings showing extent of decay
+Pre-operative photo
+Attached — clinical photograph
+Prior crown history
+No prior crown on tooth #14 in HCSC records
