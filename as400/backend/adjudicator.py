@@ -323,7 +323,7 @@ def adjudicate_cob(parsed: dict, payer_ctx: dict | None = None) -> dict:
                        f"= {remaining:,.2f} REMAINING"))
     trace.append(_edit("0450", "SECONDARY COINSURANCE", "PASS",
                        f"{coins}% OF {remaining:,.2f} = {secondary_obligation:,.2f}"
-                       + (f" (FEE/MAX CAP)" if ppo_total or annual_max else ""))))
+                       + (f" (FEE/MAX CAP)" if ppo_total or annual_max else "")))
 
     # EDIT 0640 — COB settlement reconciliation (the one that matters)
     if prim_mode == sec_mode:
