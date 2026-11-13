@@ -18,9 +18,14 @@ function buildSteps(claim, decision) {
 
   const billed    = gold.billed_amount;
   const primPaid  = gold.primary_paid_amount;
-  const remaining = billed != null && primPaid != null ? Math.round((billed - primPaid) * 100) / 100 : null;
+  const allowed   = gold.primary_allowed_amount;
+  const remaining = allowed != null && primPaid != null
+    ? Math.round((allowed - primPaid) * 100) / 100
+    : null;
   const coins     = gold.secondary_coinsurance;
-  const obligation = decision?.approved_amount;
+  const obligation = decision?.approved_amount
+    ?? decision?.display_metrics?.secondary_owes
+    ?? claim?.display_metrics?.secondary_owes;
 
   const sources = decision?.data_sources || [];
   const srcNames = sources.map(s => s.table).filter(Boolean);
@@ -80,11 +85,11 @@ function buildSteps(claim, decision) {
       n: 4,
       title: "Benefit Calculation",
       tech: "Remaining balance and coinsurance split",
-      think: "Computing what the secondary plan owes on the balance the primary left, then checking the combined payment cannot exceed what was billed.",
+      think: "Computing secondary obligation from primary allowed minus primary paid (COB remainder), applying coinsurance and plan caps, then checking no overpayment vs billed.",
       result: remaining != null
-        ? `Billed ${fmt$(billed)} − primary ${fmt$(primPaid)} = ${fmt$(remaining)} remaining.`
+        ? `Allowed ${fmt$(allowed)} − primary ${fmt$(primPaid)} = ${fmt$(remaining)} remaining.`
         : "Figures unavailable until adjudication runs.",
-      calc: remaining != null ? { billed, primPaid, remaining, coins, obligation, monthly, cap, term, monthsNeeded } : null,
+      calc: remaining != null ? { billed, allowed, primPaid, remaining, coins, obligation, monthly, cap, term, monthsNeeded } : null,
       ext: [],
     },
     {
@@ -153,14 +158,15 @@ function CobPath({ cob }) {
 
 function CalcTable({ calc }) {
   if (!calc) return null;
-  const { billed, primPaid, remaining, coins, obligation, monthly, cap, term, monthsNeeded } = calc;
+  const { billed, allowed, primPaid, remaining, coins, obligation, monthly, cap, term, monthsNeeded } = calc;
   const total = obligation != null && primPaid != null ? Math.round((primPaid + obligation) * 100) / 100 : null;
   const safe = total != null && billed != null && total <= billed;
 
   const rows = [
-    ["Billed charges", fmt$(billed), null],
-    [`Less ${"primary paid"}`, "−" + fmt$(primPaid), null],
-    ["Remaining balance", fmt$(remaining), T.azure],
+    ["Primary allowed (COB basis)", fmt$(allowed), null],
+    [`Less primary paid`, "−" + fmt$(primPaid), null],
+    ["Remaining COB balance", fmt$(remaining), T.azure],
+    ["Billed charges (overpayment check)", fmt$(billed), null],
     [coins ? `Secondary coinsurance ${coins}%` : "Secondary obligation", fmt$(obligation), T.amber],
   ];
 

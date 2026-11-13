@@ -265,7 +265,9 @@ export default function ClaimPage() {
             onSubmitEdits={body => runAdjudication(body)}
             running={running}
           />
-          {gold.cob_flag && claim.cobd?.hcsc_role === "SECONDARY" && <CobRules gold={gold} />}
+          {gold.cob_flag && claim.cobd?.hcsc_role === "SECONDARY" && (
+            <CobRules gold={gold} displayMetrics={claim.display_metrics} />
+          )}
 
           {decision?.data_sources?.length > 0 && (
             <div style={{ ...S.card, marginTop: 18 }}>

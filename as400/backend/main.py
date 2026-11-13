@@ -40,6 +40,7 @@ from sqlalchemy.orm import Session
 
 from adjudicator import adjudicate_cob, human_review_worksheet, parse_cob_edi
 from database import As400Claim, SessionLocal, create_tables, get_db
+from payer_data import cob_reference_context, verify_reference_data
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
@@ -70,7 +71,13 @@ STATUS_TEXT = {
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_tables()
+    ref = verify_reference_data()
     print(f"✅ AS/400 claims file ready  —  SYSTEM {SYSTEM_NAME}  LIB {LIBRARY}")
+    if ref.get("ok"):
+        print(f"   Payer reference data: {ref['members']} members, "
+              f"{ref['plans']} plans, {ref['fee_schedules']} fee rows")
+    else:
+        print(f"   ⚠ Payer reference data not ready: {ref.get('hint') or ref.get('error')}")
     threading.Thread(target=_batch_loop, daemon=True).start()
     yield
 
@@ -144,7 +151,11 @@ def _refer_to_dearborn(claim: As400Claim) -> tuple[bool, str]:
 
 def _run_edits(claim: As400Claim, db: Session) -> None:
     parsed = parse_cob_edi(claim.raw_edi or "")
-    decision = adjudicate_cob(parsed)
+    payer_ctx = cob_reference_context(
+        parsed.get("subscriber_id") or "",
+        parsed.get("cdt_codes") or [],
+    )
+    decision = adjudicate_cob(parsed, payer_ctx=payer_ctx)
 
     claim.primary_payer         = parsed.get("primary_payer")
     claim.primary_payer_id      = parsed.get("primary_payer_id")
@@ -203,7 +214,24 @@ def _batch_loop() -> None:
 
 @app.get("/as400/health")
 def health():
-    return {"status": "ok", "system": SYSTEM_NAME, "library": LIBRARY}
+    ref = verify_reference_data()
+    return {
+        "status": "ok",
+        "system": SYSTEM_NAME,
+        "library": LIBRARY,
+        "database": "postgresql",
+        "payer_reference_data": ref,
+    }
+
+
+@app.get("/as400/reference/{subscriber_id}")
+def reference_snapshot(subscriber_id: str, cdt: str = ""):
+    """Member + plan + fee-schedule totals from public schema (read-only)."""
+    codes = [c.strip() for c in cdt.split(",") if c.strip()] if cdt else []
+    ctx = cob_reference_context(subscriber_id, codes)
+    if not ctx:
+        raise HTTPException(404, "MEMBER OR PLAN DATA NOT FOUND")
+    return ctx
 
 
 @app.post("/as400/claims/receive")
@@ -282,7 +310,11 @@ def get_worksheet(claim_no: str, db: Session = Depends(get_db)):
         raise HTTPException(400, f"CLAIM NOT IN SUSPENSE (STATUS {claim.status})")
 
     parsed = parse_cob_edi(claim.raw_edi or "")
-    decision = adjudicate_cob(parsed)
+    payer_ctx = cob_reference_context(
+        parsed.get("subscriber_id") or "",
+        parsed.get("cdt_codes") or [],
+    )
+    decision = adjudicate_cob(parsed, payer_ctx=payer_ctx)
     return {
         "claim_no": claim.claim_no,
         "suspend_code": claim.suspend_code,

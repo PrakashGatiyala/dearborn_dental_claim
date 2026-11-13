@@ -274,7 +274,7 @@ If CDT codes contain D806x/D808x/D809x AND cob_flag is true:
 If cob_flag is true AND no ortho codes (D806x/D808x/D809x) present:
 - Call lookup_primary_eob(subscriber_id)
 - Check payment_type:
-  * "lump_sum": secondary plan obligation = min(remaining_balance * coinsurance_pct, plan annual_max)
+  * "lump_sum": secondary obligation = remaining_cob × coinsurance_pct, capped by fee schedule and annual_max
   * "monthly": secondary plan must honor its monthly schedule without exceeding remaining_balance
 - Verify: primary_paid_amount + secondary_obligation must NOT exceed billed_amount (no overpayment)
 - Always set complex_case_type="CROSS_PLAN_COB" (it describes the case, not the outcome)
@@ -343,13 +343,11 @@ YOU MUST DO THE ARITHMETIC. Do not describe the method and stop — a reviewer
 needs the figures. Specifically:
 
 - Compute the actual numbers and put them in the justification:
-    remaining_balance = billed_amount − primary_paid_amount
-    secondary_obligation = remaining_balance × coinsurance_pct
-    capped = min(secondary_obligation, plan annual_max)
+    remaining_balance = primary_allowed_amount − primary_paid_amount
+    secondary_obligation = remaining_balance × coinsurance_pct (cap with fee schedule + annual max)
   Round to the nearest cent. Write them out with dollar signs, e.g.
-    "$1,190.00 billed − $442.00 paid by Delta Dental of Illinois = $748.00
-     remaining. HCSC coinsurance 50% → $374.00. $442.00 + $374.00 = $816.00,
-     within the $1,190.00 billed, so no overpayment."
+    "$1,100 allowed − $442 primary paid = $658 remaining. HCSC 50% → $329.
+     Verify $442 + $329 ≤ billed and obligation ≤ plan annual max."
 - Set approved_amount to the calculated secondary obligation (the capped figure).
   This is the recommended payment the reviewer will verify — NOT null. Leave it
   null ONLY if the EOB is missing and you genuinely cannot compute it.
@@ -364,10 +362,10 @@ needs the figures. Specifically:
   and the real EOB number — not generic advice. For example:
     [
       "Retrieve EOB DELTA-EOB-2026-23487 from Delta Dental of Illinois and confirm the paid amount of $442.00.",
-      "Confirm remaining balance $1,190.00 − $442.00 = $748.00.",
-      "Apply HCSC coinsurance 50% → obligation $374.00.",
-      "Verify $442.00 + $374.00 = $816.00 ≤ $1,190.00 — no overpayment.",
-      "Authorise the coordinated payment of $374.00.",
+      "Confirm remaining COB balance $1,100.00 allowed − $442.00 primary = $658.00.",
+      "Apply HCSC coinsurance 50% → obligation $329.00 (within annual max).",
+      "Verify $442.00 + $329.00 = $771.00 ≤ $1,190.00 billed — no overpayment.",
+      "Authorise the coordinated payment of $329.00.",
       "Record the COB coordination against both member records."
     ]
 
@@ -405,6 +403,7 @@ def adjudicate(claim_id: str, gold_data: dict) -> dict:
     claim_for_agent = dict(gold_data)
     if gold_data.get("cob_flag"):
         from cobd import determine as cobd_determine
+
         claim_for_agent["cobd"] = cobd_determine(gold_data)
 
     messages = [

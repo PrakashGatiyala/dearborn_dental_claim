@@ -9,8 +9,9 @@ Two flavours are produced, and the difference is the whole point of the demo:
 
   SIMPLE_COB
       Both plans settle the same way (both lump-sum, percentage coinsurance).
-      The payer's AS/400 can reconcile this on its own: remaining = billed
-      minus primary paid, secondary owes its coinsurance share of that.
+      The payer's AS/400 can reconcile this on its own: remaining = primary
+      allowed minus primary paid, secondary owes its coinsurance share (fee
+      schedule and annual max caps).
       No human needed.
 
   CROSS_PLAN_COB
@@ -302,7 +303,7 @@ def _build_case(seq: int, cross_plan: bool, rng: random.Random,
         # share of claims genuinely cannot be settled inside the term — those
         # are the ones that still need a human. Without this every cross-plan
         # claim resolves and the escalation path is never exercised.
-        remaining  = round(billed - primary_paid, 2)
+        remaining  = round(primary_allowed - primary_paid, 2)
         obligation = max(remaining * plan_coins / 100, 1.0)
 
         secondary_settlement  = "MONTHLY"
@@ -662,7 +663,7 @@ def write_manifest(cases: list[CobCase], out_dir: Path) -> None:
 
     rows = []
     for c in cases:
-        remaining = round(c.billed - c.primary_paid, 2)
+        remaining = round(c.primary_allowed - c.primary_paid, 2)
         secondary_owed = round(remaining * c.secondary_coinsurance / 100, 2)
         rows.append({
             "filename":              c.filename,

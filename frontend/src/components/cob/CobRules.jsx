@@ -30,15 +30,18 @@ function Rule({ n, title, formula, live, ok }) {
   );
 }
 
-export default function CobRules({ gold }) {
+export default function CobRules({ gold, displayMetrics }) {
   const g = gold || {};
   const billed = Number(g.billed_amount);
   const paid = Number(g.primary_paid_amount);
+  const allowed = Number(g.primary_allowed_amount);
   const coins = Number(g.secondary_coinsurance);
-  const have = [billed, paid, coins].every(Number.isFinite);
+  const have = [billed, paid, allowed, coins].every(Number.isFinite);
 
-  const remaining = have ? billed - paid : null;
-  const obligation = have ? Math.round(remaining * (coins / 100) * 100) / 100 : null;
+  const remaining = have ? Math.round((allowed - paid) * 100) / 100 : null;
+  const obligation = displayMetrics?.secondary_owes != null
+    ? Number(displayMetrics.secondary_owes)
+    : (have ? Math.round(remaining * (coins / 100) * 100) / 100 : null);
   const total = have ? paid + obligation : null;
 
   const monthly = g.secondary_settlement === "MONTHLY" && Number(g.monthly_cap) > 0;
@@ -56,8 +59,8 @@ export default function CobRules({ gold }) {
       <Rule
         n={1}
         title="Remaining balance after the primary plan"
-        formula="remaining = billed − primary_paid"
-        live={have ? `${fmt$(billed)} − ${fmt$(paid)} = ${fmt$(remaining)}` : "Awaiting figures on claim"}
+        formula="remaining = primary_allowed − primary_paid"
+        live={have ? `${fmt$(allowed)} − ${fmt$(paid)} = ${fmt$(remaining)}` : "Awaiting figures on claim"}
       />
       <Rule
         n={2}

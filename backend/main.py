@@ -38,6 +38,7 @@ import blobstore
 import human_input
 from agent import adjudicate
 from cobd import determine as cobd_determine
+from cob_display_metrics import compute_cob_display_metrics
 from pydantic import BaseModel
 
 
@@ -235,6 +236,7 @@ def get_claim(claim_id: str, db: Session = Depends(get_db)):
                             for k, v in human_input.EDITABLE.items()},
         "documents": human_input.list_documents(claim_id),
         "cobd": cobd_determine(gold_data) if gold_data and gold_data.get("cob_flag") else None,
+        "display_metrics": compute_cob_display_metrics(gold_data, claim.suspend_code),
         "created_at": claim.created_at.isoformat() if claim.created_at else None,
         "decision": json.loads(claim.decision_json) if claim.decision_json else None,
         "resolution": claim.resolution,
@@ -306,6 +308,9 @@ def run_adjudication(claim_id: str, body: AdjudicateBody | None = None,
         "overrides": effective.get("human_overrides", []),
         "note": effective.get("reviewer_note"),
     }
+    dm = compute_cob_display_metrics(effective, claim.suspend_code)
+    if dm:
+        decision["display_metrics"] = dm
     claim = db.query(Claim).filter_by(claim_id=claim_id).first()
     claim.decision_json = json.dumps(decision)
     claim.resolution = None

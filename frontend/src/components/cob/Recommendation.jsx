@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { S, T, btn, fmt$ } from "../../theme";
-
 /**
  * The agent's recommendation, and the controls that keep a human in front of it.
  *
@@ -64,6 +63,7 @@ export default function Recommendation({ claim, decision, onDecide, onRerun, onS
   if (!decision) return null;
 
   const gold = claim?.gold_data || {};
+  const dm = decision?.display_metrics ?? claim?.display_metrics;
   const approve = decision.decision === "APPROVED";
   const approvedAlready = claim.resolution === "APPROVED";
   const stampColour = approve ? T.green : decision.decision === "DENIED" ? T.red : T.amber;
@@ -84,7 +84,7 @@ export default function Recommendation({ claim, decision, onDecide, onRerun, onS
   // The values the form starts from, and is compared against on submit.
   const base = {
     primary_paid_amount: show(gold.primary_paid_amount),
-    secondary_owes_override: show(decision.approved_amount),
+    secondary_owes_override: show(decision.approved_amount ?? dm?.secondary_owes),
     billed_amount: show(gold.billed_amount),
     secondary_coinsurance: show(gold.secondary_coinsurance),
     secondary_settlement: gold.secondary_settlement || "",
@@ -137,10 +137,15 @@ export default function Recommendation({ claim, decision, onDecide, onRerun, onS
   // ── figures shown in the tiles (live while editing) ────────────────────────
   const billed     = editing ? num(draft.billed_amount) : gold.billed_amount;
   const primPaid   = editing ? num(draft.primary_paid_amount) : gold.primary_paid_amount;
-  const secondary  = editing ? num(draft.secondary_owes_override) : decision.approved_amount;
-  const memberResp = billed != null && primPaid != null && secondary != null
-    ? Math.round((billed - primPaid - secondary) * 100) / 100
-    : null;
+  const secondary  = editing ? num(draft.secondary_owes_override)
+    : (decision.approved_amount ?? dm?.secondary_owes ?? null);
+  const memberResp = editing
+    ? (billed != null && primPaid != null && secondary != null
+        ? Math.round((billed - primPaid - secondary) * 100) / 100
+        : null)
+    : (dm?.member_liability ?? (billed != null && primPaid != null && secondary != null
+        ? Math.round((billed - primPaid - secondary) * 100) / 100
+        : null));
 
   const lbl = { fontSize: 10, color: T.mute2 };
   const tile = { background: T.panelR, borderRadius: 7, padding: 10 };

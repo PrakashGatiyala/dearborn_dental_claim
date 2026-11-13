@@ -25,6 +25,7 @@ from __future__ import annotations
 import re
 
 from cobd import determine
+from cob_settlement import compute_cob_settlement
 
 # ── EDI parsing ───────────────────────────────────────────────────────────────
 
@@ -214,16 +215,17 @@ def _edit(seq: str, name: str, result: str, detail: str) -> dict:
     return {"seq": seq, "name": name, "result": result, "detail": detail}
 
 
-def adjudicate_cob(parsed: dict) -> dict:
+def adjudicate_cob(parsed: dict, payer_ctx: dict | None = None) -> dict:
     """
     Run the edit sequence. Returns a decision dict the AS/400 screen renders
     verbatim, including the numbered edit trace.
     """
     trace: list[dict] = []
 
-    billed       = parsed.get("billed_amount")
-    primary_paid = parsed.get("primary_paid")
-    coins        = parsed.get("secondary_coinsurance")
+    billed            = parsed.get("billed_amount")
+    primary_paid      = parsed.get("primary_paid")
+    primary_allowed   = parsed.get("primary_allowed")
+    coins             = parsed.get("secondary_coinsurance")
     prim_mode    = (parsed.get("primary_settlement") or "LUMP_SUM").upper()
     sec_mode     = (parsed.get("secondary_settlement") or "LUMP_SUM").upper()
     cap          = parsed.get("monthly_cap")
@@ -288,22 +290,40 @@ def adjudicate_cob(parsed: dict) -> dict:
             liability_detail=term_.get("detail") or "",
         )
 
-    # EDIT 0310 — overpayment guard
+    # EDIT 0310 — primary allowed on file + overpayment guard
+    if primary_allowed is None:
+        trace.append(_edit("0310", "PRIMARY ALLOWED ON FILE", "FAIL", "AMT*B6 NOT PRESENT"))
+        return suspend("COB-01", trace)
     if primary_paid > billed:
         trace.append(_edit("0310", "OVERPAYMENT GUARD", "FAIL",
                            f"PRIMARY PAID {primary_paid:,.2f} GT BILLED {billed:,.2f}"))
         return suspend("COB-02", trace)
-    remaining = round(billed - primary_paid, 2)
-    trace.append(_edit("0310", "OVERPAYMENT GUARD", "PASS",
-                       f"REMAINING {remaining:,.2f} = {billed:,.2f} - {primary_paid:,.2f}"))
-
-    # EDIT 0450 — secondary coinsurance on file
     if not coins:
         trace.append(_edit("0450", "SECONDARY COINSURANCE", "FAIL", "SBR COINS PCT NOT ON FILE"))
-        return suspend("COB-04", trace, remaining=remaining)
-    secondary_obligation = round(remaining * coins / 100, 2)
+        return suspend("COB-04", trace)
+
+    ppo_total = (payer_ctx or {}).get("ppo_allowed_total")
+    annual_max = (payer_ctx or {}).get("annual_max")
+    settle = compute_cob_settlement(
+        billed=billed,
+        primary_allowed=primary_allowed,
+        primary_paid=primary_paid,
+        coinsurance_pct=coins,
+        hcsc_ppo_allowed_total=ppo_total,
+        annual_max=annual_max,
+    )
+    if not settle.get("ok"):
+        trace.append(_edit("0310", "PRIMARY ALLOWED ON FILE", "FAIL", "ALLOWED AMT INVALID"))
+        return suspend("COB-01", trace)
+
+    remaining = settle["remaining_cob"]
+    secondary_obligation = settle["secondary_owes"]
+    trace.append(_edit("0310", "COB REMAINDER", "PASS",
+                       f"{primary_allowed:,.2f} ALLOWED − {primary_paid:,.2f} PAID "
+                       f"= {remaining:,.2f} REMAINING"))
     trace.append(_edit("0450", "SECONDARY COINSURANCE", "PASS",
-                       f"{coins}% OF {remaining:,.2f} = {secondary_obligation:,.2f}"))
+                       f"{coins}% OF {remaining:,.2f} = {secondary_obligation:,.2f}"
+                       + (f" (FEE/MAX CAP)" if ppo_total or annual_max else ""))))
 
     # EDIT 0640 — COB settlement reconciliation (the one that matters)
     if prim_mode == sec_mode:
