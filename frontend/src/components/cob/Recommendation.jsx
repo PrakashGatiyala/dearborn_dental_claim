@@ -248,7 +248,8 @@ export default function Recommendation({ claim, decision, onDecide, onRerun, onS
 
         {/* Only an actual escalation gets the amber flag. An approved
             coordination gets credit for having been resolved. */}
-        {!editing && decision.decision === "NEEDS_REVIEW" && decision.complex_case_type && (
+        {!editing && decision.decision === "NEEDS_REVIEW" && decision.complex_case_type
+          && decision.complex_case_type !== "COB_LIABILITY_PRIMARY" && (
           <div style={S.flag}>
             ⚑ Escalation reason: {{
               ORTHO_AMBIGUITY: "Orthodontic CDT code does not match the patient's age; the clinical narrative has to be read by a specialist.",

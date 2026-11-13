@@ -302,11 +302,21 @@ If none of these are present, this is a first run; ignore this paragraph.
 LIABILITY FIRST. The claim message includes a "cobd" object: the client's COB
 liability flowchart already walked for this claim. Read it before any arithmetic.
   * cobd.hcsc_role = "SECONDARY": HCSC pays after the other plan. Continue below.
-  * cobd.hcsc_role = "PRIMARY": HCSC should have paid first, so the other payer's
-    payment is the error. Do NOT compute a secondary payment. Return NEEDS_REVIEW,
-    complex_case_type="CROSS_PLAN_COB", denial_codes=["COB-05"], approved_amount=null.
-    Justification names the flowchart rule and node (e.g. "Rule 2, birthday rule").
-    Guidance: reprocess as primary, then recover the other payer's payment.
+  * cobd.hcsc_role = "PRIMARY": HCSC should have paid first. Return NEEDS_REVIEW,
+    complex_case_type="COB_LIABILITY_PRIMARY", denial_codes=["COB-05"], approved_amount=null.
+    The payload includes filing_vs_cobd with as_filed and as_corrected figures — use those
+    exact amounts in justification (do not invent numbers).
+    Write justification as ONE reviewer-facing paragraph (4–7 sentences) that includes ALL of:
+      (1) How the 837D was filed: gold primary_payer as primary, HCSC as secondary.
+      (2) COBD conclusion: quote cobd.terminal rule/node and that HCSC should be primary.
+      (3) As-filed math from filing_vs_cobd.as_filed: implied HCSC share and member liability
+          if processed as filed (secondary COB on the wrong order).
+      (4) Corrected path: if refiled per COBD with HCSC as primary payer, state HCSC plan pay
+          and member liability from filing_vs_cobd.as_corrected.
+      (5) State that the other plan's primary_paid_amount was paid in error and must be
+          recovered in full; do NOT state that the other payer owes secondary COB on this claim.
+      (6) Ask the reviewer to confirm the filing error and approve reprocessing if valid.
+    human_reviewer_guidance: concrete steps with dollar amounts (confirm COBD, recovery, reprocess).
   * cobd.hcsc_role = "UNDETERMINED": the flow cannot settle it alone. Return
     NEEDS_REVIEW, denial_codes=["COB-06"], approved_amount=null. Justification
     states which rule or branch applies (cobd.terminal) and what evidence is missing.
@@ -340,7 +350,9 @@ A clean coordination is an APPROVED recommendation a technician confirms in one
 click. That is the normal outcome, not the exception.
 
 YOU MUST DO THE ARITHMETIC. Do not describe the method and stop — a reviewer
-needs the figures. Specifically:
+needs the figures. If cobd.hcsc_role is PRIMARY (COB-05), skip secondary_obligation
+below; use only filing_vs_cobd.as_filed and as_corrected in the justification.
+Specifically:
 
 - Compute the actual numbers and put them in the justification:
     remaining_balance = primary_allowed_amount − primary_paid_amount
@@ -377,7 +389,7 @@ Step 6 — Return your decision as a JSON object with this exact structure:
   "decision": "APPROVED" | "DENIED" | "NEEDS_REVIEW",
   "confidence": <float 0.0-1.0>,
   "justification": "<plain English explanation, 3-5 sentences>",
-  "complex_case_type": "ORTHO_AMBIGUITY" | "WIP_ORTHO_COB" | "CROSS_PLAN_COB" | null,
+  "complex_case_type": "ORTHO_AMBIGUITY" | "WIP_ORTHO_COB" | "CROSS_PLAN_COB" | "COB_LIABILITY_PRIMARY" | null,
   "human_reviewer_guidance": ["<step>", "<step>"],   // array of strings, unnumbered
   "data_sources": [
     {{"table": "<table name>", "row": {{...entire row dict...}}}}
@@ -403,8 +415,13 @@ def adjudicate(claim_id: str, gold_data: dict) -> dict:
     claim_for_agent = dict(gold_data)
     if gold_data.get("cob_flag"):
         from cobd import determine as cobd_determine
+        from cob_filing_review import compute_filing_vs_cobd
 
-        claim_for_agent["cobd"] = cobd_determine(gold_data)
+        cobd = cobd_determine(gold_data)
+        claim_for_agent["cobd"] = cobd
+        fv = compute_filing_vs_cobd(gold_data, cobd)
+        if fv:
+            claim_for_agent["filing_vs_cobd"] = fv
 
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
