@@ -93,7 +93,7 @@ app.add_middleware(
 @app.get("/health")
 def health():
     """Cheap liveness check for Render (no database work)."""
-    return {"status": "ok", "service": "dearborn-workbench"}
+    return {"status": "ok", "service": "dearborn-workbench", "deploy_tag": "2026-03-16-test"}
 
 
 @app.post("/upload")
