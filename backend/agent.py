@@ -146,9 +146,11 @@ TOOLS = [
             "name": "lookup_primary_eob",
             "description": (
                 "Look up the EOB (Explanation of Benefits) from the primary insurance plan. "
-                "Returns primary_plan_name, billed_amount, primary_paid_amount, payment_type "
-                "(lump_sum or monthly), monthly_amount, months_paid, and remaining_balance. "
-                "Call this when cob_flag is true to calculate secondary plan obligations."
+                "Returns primary_plan_name, billed_amount, primary_allowed_amount, "
+                "primary_paid_amount, payment_type (lump_sum or monthly), monthly_amount, "
+                "months_paid, and remaining_balance (allowed minus paid). "
+                "For COB, use primary_allowed_amount as the allowed basis — never use "
+                "billed_amount as primary allowed. Call when cob_flag is true."
             ),
             "parameters": {
                 "type": "object",
@@ -273,9 +275,11 @@ If CDT codes contain D806x/D808x/D809x AND cob_flag is true:
 ### Scenario 3 — Cross-Plan Coordination of Benefits
 If cob_flag is true AND no ortho codes (D806x/D808x/D809x) present:
 - Call lookup_primary_eob(subscriber_id)
+- COB remainder = EOB primary_allowed_amount (or claim primary_allowed_amount) − primary_paid_amount.
+  Do NOT subtract paid from billed_amount; billed is for overpayment checks only.
 - Check payment_type:
-  * "lump_sum": secondary obligation = remaining_cob × coinsurance_pct, capped by fee schedule and annual_max
-  * "monthly": secondary plan must honor its monthly schedule without exceeding remaining_balance
+  * "lump_sum": secondary obligation = COB remainder × coinsurance_pct, capped by fee schedule and annual_max
+  * "monthly": secondary plan must honor its monthly schedule without exceeding the COB remainder
 - Verify: primary_paid_amount + secondary_obligation must NOT exceed billed_amount (no overpayment)
 - Always set complex_case_type="CROSS_PLAN_COB" (it describes the case, not the outcome)
 

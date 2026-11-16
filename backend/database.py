@@ -180,8 +180,9 @@ class EobRecord(Base):
     primary_plan_id     = Column(String)
     primary_plan_name   = Column(String)
     cdt_codes           = Column(Text)                # JSON array
-    billed_amount       = Column(Float)
-    primary_paid_amount = Column(Float)
+    billed_amount           = Column(Float)
+    primary_paid_amount     = Column(Float)
+    primary_allowed_amount  = Column(Float)           # primary plan allowed (COB basis)
     payment_type        = Column(String)              # "lump_sum" or "monthly"
     monthly_amount      = Column(Float)
     months_paid         = Column(Integer)
@@ -194,6 +195,7 @@ class EobRecord(Base):
 def create_tables():
     Base.metadata.create_all(engine)
     _migrate_claims()
+    _migrate_eob_records()
 
 
 def _migrate_claims():
@@ -233,6 +235,20 @@ def _migrate_claims():
                 if "duplicate" in str(exc).lower() or "already exists" in str(exc).lower():
                     continue
                 print(f"[DB migrate] could not add {col}: {exc}")
+
+
+def _migrate_eob_records() -> None:
+    from sqlalchemy import text
+
+    with engine.connect() as conn:
+        try:
+            conn.execute(text(
+                "ALTER TABLE eob_records ADD COLUMN IF NOT EXISTS primary_allowed_amount FLOAT"
+            ))
+            conn.commit()
+        except Exception as exc:  # noqa: BLE001
+            if "duplicate" not in str(exc).lower() and "already exists" not in str(exc).lower():
+                print(f"[DB migrate] could not add eob_records.primary_allowed_amount: {exc}")
 
 
 def get_db():

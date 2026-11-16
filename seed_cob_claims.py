@@ -163,23 +163,27 @@ def seed() -> None:
                 counts["fees"] += 1
 
         # ── Primary payer's EOB — the heart of the COB calculation ───────────
-        if not db.query(EobRecord).filter_by(subscriber_id=sid).first():
-            db.add(EobRecord(
-                subscriber_id       = sid,
-                eob_number          = r["primary_eob_ref"],
-                primary_plan_id     = r["primary_payer_id"],
-                primary_plan_name   = r["primary_payer"].title(),
-                cdt_codes           = json.dumps([p["cdt_code"] for p in r["procedures"]]),
-                billed_amount       = r["billed"],
-                primary_paid_amount = r["primary_paid"],
-                # The generator always has the primary settle in one payment.
-                payment_type        = "lump_sum",
-                monthly_amount      = None,
-                months_paid         = None,
-                claim_date          = r["service_date"],
-                remaining_balance   = r["remaining"],
-            ))
+        eob = db.query(EobRecord).filter_by(subscriber_id=sid).first()
+        eob_fields = dict(
+            eob_number              = r["primary_eob_ref"],
+            primary_plan_id         = r["primary_payer_id"],
+            primary_plan_name       = r["primary_payer"].title(),
+            cdt_codes               = json.dumps([p["cdt_code"] for p in r["procedures"]]),
+            billed_amount           = r["billed"],
+            primary_paid_amount     = r["primary_paid"],
+            primary_allowed_amount  = r["primary_allowed"],
+            payment_type            = "lump_sum",
+            monthly_amount          = None,
+            months_paid             = None,
+            claim_date              = r["service_date"],
+            remaining_balance       = r["remaining"],
+        )
+        if not eob:
+            db.add(EobRecord(subscriber_id=sid, **eob_fields))
             counts["eobs"] += 1
+        else:
+            for k, v in eob_fields.items():
+                setattr(eob, k, v)
 
     db.commit()
     db.close()
