@@ -1,4 +1,13 @@
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+# Repo-root .env (seed scripts import this module before main.py loads env).
+_repo_root = Path(__file__).resolve().parent.parent
+load_dotenv(_repo_root / ".env")
+load_dotenv()
+
 from sqlalchemy import (
     create_engine, Column, Integer, String, Float, Boolean, Text, DateTime,
     LargeBinary, UniqueConstraint,
@@ -6,8 +15,10 @@ from sqlalchemy import (
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime, timezone
 
-# DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://dental:dental123@localhost:5432/dental_claims")
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres.vocopspeoxwzbmlrbiaq:Ivakrap20112003@aws-0-ap-southeast-2.pooler.supabase.com:6543/postgres")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://dental:dental123@localhost:5433/dental_claims",
+)
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine)
